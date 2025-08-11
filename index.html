@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>9M2PJU Basic Antenna Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📡 9M2PJU Basic Antenna Calculator</h1>
+            <p>Calculate dimensions and properties for common antenna types</p>
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-section">
+                <div class="frequency-input">
+                    <label for="frequency">Operating Frequency (MHz):</label>
+                    <input type="number" 
+                           id="frequency" 
+                           step="0.001" 
+                           min="0.1" 
+                           max="10000" 
+                           value="14.074" 
+                           placeholder="e.g., 14.074"
+                           inputmode="decimal"
+                           pattern="[0-9]*[.]?[0-9]+">
+                </div>
+                
+                <div class="antenna-selector">
+                    <label>Antenna Type:</label>
+                    <div class="antenna-buttons">
+                        <button class="antenna-btn active" data-type="vertical">Vertical</button>
+                        <button class="antenna-btn" data-type="dipole">Dipole</button>
+                        <button class="antenna-btn" data-type="yagi">Yagi</button>
+                        <button class="antenna-btn" data-type="quad">Quad</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <div id="vertical-results" class="antenna-results active">
+                    <h3>Vertical Antenna</h3>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <span class="label">Antenna Height:</span>
+                            <span class="value" id="vertical-height">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Ground Plane Length:</span>
+                            <span class="value" id="vertical-ground">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Impedance:</span>
+                            <span class="value" id="vertical-impedance">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Gain:</span>
+                            <span class="value" id="vertical-gain">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="dipole-results" class="antenna-results">
+                    <h3>Dipole Antenna</h3>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <span class="label">Total Length:</span>
+                            <span class="value" id="dipole-length">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Each Side:</span>
+                            <span class="value" id="dipole-side">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Impedance:</span>
+                            <span class="value" id="dipole-impedance">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Gain:</span>
+                            <span class="value" id="dipole-gain">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="yagi-results" class="antenna-results">
+                    <h3>Yagi Antenna</h3>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <span class="label">Driven Element:</span>
+                            <span class="value" id="yagi-driven">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Reflector:</span>
+                            <span class="value" id="yagi-reflector">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Director:</span>
+                            <span class="value" id="yagi-director">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Boom Length:</span>
+                            <span class="value" id="yagi-boom">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Gain:</span>
+                            <span class="value" id="yagi-gain">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="quad-results" class="antenna-results">
+                    <h3>Quad Antenna</h3>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <span class="label">Loop Perimeter:</span>
+                            <span class="value" id="quad-perimeter">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Side Length:</span>
+                            <span class="value" id="quad-side">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Impedance:</span>
+                            <span class="value" id="quad-impedance">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Gain:</span>
+                            <span class="value" id="quad-gain">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <div class="info-card">
+                    <h4>📊 Calculations Include:</h4>
+                    <ul>
+                        <li>Velocity factor compensation</li>
+                        <li>Standard impedance values</li>
+                        <li>Typical gain figures</li>
+                        <li>Practical dimensions</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h4>⚠️ Notes:</h4>
+                    <ul>
+                        <li>Dimensions are theoretical</li>
+                        <li>Fine-tuning may be required</li>
+                        <li>Consider local conditions</li>
+                        <li>Check local regulations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
