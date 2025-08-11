@@ -63,6 +63,8 @@ function calculateVertical(frequency) {
     document.getElementById('vertical-ground').textContent = formatLength(groundPlaneLength);
     document.getElementById('vertical-impedance').textContent = '36.8 Ω';
     document.getElementById('vertical-gain').textContent = '2.15 dBi';
+    document.getElementById('vertical-balun').textContent = 'Current Balun';
+    document.getElementById('vertical-balun-ratio').textContent = '1:1';
 }
 
 function calculateDipole(frequency) {
@@ -74,6 +76,8 @@ function calculateDipole(frequency) {
     document.getElementById('dipole-side').textContent = formatLength(eachSide);
     document.getElementById('dipole-impedance').textContent = '73 Ω';
     document.getElementById('dipole-gain').textContent = '2.15 dBi';
+    document.getElementById('dipole-balun').textContent = 'Current Balun';
+    document.getElementById('dipole-balun-ratio').textContent = '1:1';
 }
 
 function calculateYagi(frequency) {
@@ -96,6 +100,8 @@ function calculateYagi(frequency) {
     document.getElementById('yagi-director').textContent = formatLength(director);
     document.getElementById('yagi-boom').textContent = formatLength(boomLength);
     document.getElementById('yagi-gain').textContent = '7-10 dBi';
+    document.getElementById('yagi-balun').textContent = 'Current Balun';
+    document.getElementById('yagi-balun-ratio').textContent = '1:1';
 }
 
 function calculateQuad(frequency) {
@@ -111,6 +117,8 @@ function calculateQuad(frequency) {
     document.getElementById('quad-side').textContent = formatLength(sideLength);
     document.getElementById('quad-impedance').textContent = '100-140 Ω';
     document.getElementById('quad-gain').textContent = '3-4 dBi';
+    document.getElementById('quad-balun').textContent = 'Voltage Balun';
+    document.getElementById('quad-balun-ratio').textContent = '4:1';
 }
 
 function formatLength(meters) {
