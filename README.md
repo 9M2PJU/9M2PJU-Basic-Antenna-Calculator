@@ -2,6 +2,8 @@
 
 A modern, responsive web application for calculating dimensions and properties of common amateur radio antennas.
 
+Live view: https://antenna.hamradio.my
+
 ## 🌟 Features
 
 - **Multiple Antenna Types**: Calculate dimensions for vertical, dipole, yagi, and quad antennas
