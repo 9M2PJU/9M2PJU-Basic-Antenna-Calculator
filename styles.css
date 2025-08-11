@@ -26,6 +26,10 @@ body {
 }
 
 /* Smooth scrolling for better mobile experience */
+html, body {
+    overflow-x: hidden;
+}
+
 html {
     scroll-behavior: smooth;
 }
