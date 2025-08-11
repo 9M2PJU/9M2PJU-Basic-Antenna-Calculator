@@ -46,6 +46,30 @@
             <div class="results-section">
                 <div id="vertical-results" class="antenna-results active">
                     <h3>Vertical Antenna</h3>
+                    <div class="antenna-illustration">
+                        <svg viewBox="0 0 200 160" class="antenna-svg">
+                            <!-- Ground -->
+                            <rect x="0" y="140" width="200" height="20" fill="#2F4F4F"/>
+                            <!-- Vertical element -->
+                            <rect x="95" y="40" width="10" height="100" fill="#1E90FF"/>
+                            <!-- Ground plane radials -->
+                            <line x1="100" y1="140" x2="40" y2="120" stroke="#FFD700" stroke-width="3"/>
+                            <line x1="100" y1="140" x2="160" y2="120" stroke="#FFD700" stroke-width="3"/>
+                            <line x1="100" y1="140" x2="60" y2="100" stroke="#FFD700" stroke-width="3"/>
+                            <line x1="100" y1="140" x2="140" y2="100" stroke="#FFD700" stroke-width="3"/>
+                            <!-- Feed point with connector -->
+                            <circle cx="100" cy="140" r="6" fill="#DC143C"/>
+                            <rect x="95" y="150" width="10" height="15" fill="#DC143C"/>
+                            <!-- Coaxial cable -->
+                            <line x1="100" y1="165" x2="100" y2="180" stroke="#333" stroke-width="4"/>
+                            <line x1="90" y1="180" x2="110" y2="180" stroke="#333" stroke-width="2"/>
+                            <!-- Labels -->
+                            <text x="100" y="35" text-anchor="middle" fill="#1E40AF" font-size="12" font-weight="700">λ/4 Height</text>
+                            <text x="100" y="155" text-anchor="middle" fill="#DC2626" font-size="10" font-weight="700">Feed Point</text>
+                            <text x="100" y="190" text-anchor="middle" fill="#059669" font-size="10" font-weight="700">Coax Cable</text>
+                            <text x="50" y="125" text-anchor="middle" fill="#D97706" font-size="9" font-weight="700">Ground Radials</text>
+                        </svg>
+                    </div>
                     <div class="result-grid">
                         <div class="result-item">
                             <span class="label">Antenna Height:</span>
@@ -68,6 +92,30 @@
 
                 <div id="dipole-results" class="antenna-results">
                     <h3>Dipole Antenna</h3>
+                    <div class="antenna-illustration">
+                        <svg viewBox="0 0 200 160" class="antenna-svg">
+                            <!-- Support structure -->
+                            <rect x="95" y="30" width="10" height="20" fill="#2F4F4F"/>
+                            <!-- Left element -->
+                            <line x1="100" y1="50" x2="30" y2="50" stroke="#1E90FF" stroke-width="4"/>
+                            <!-- Right element -->
+                            <line x1="100" y1="50" x2="170" y2="50" stroke="#1E90FF" stroke-width="4"/>
+                            <!-- Feed point with balun -->
+                            <circle cx="100" cy="50" r="8" fill="#DC143C"/>
+                            <rect x="95" y="60" width="10" height="20" fill="#DC143C"/>
+                            <!-- Coaxial cable -->
+                            <line x1="100" y1="80" x2="100" y2="100" stroke="#333" stroke-width="4"/>
+                            <line x1="90" y1="100" x2="110" y2="100" stroke="#333" stroke-width="2"/>
+                            <!-- Support lines -->
+                            <line x1="100" y1="50" x2="100" y2="70" stroke="#696969" stroke-width="2" stroke-dasharray="5,5"/>
+                            <!-- Labels -->
+                            <text x="50" y="45" text-anchor="middle" fill="#1E40AF" font-size="11" font-weight="700">λ/4 Left</text>
+                            <text x="150" y="45" text-anchor="middle" fill="#1E40AF" font-size="11" font-weight="700">λ/4 Right</text>
+                            <text x="100" y="75" text-anchor="middle" fill="#DC2626" font-size="10" font-weight="700">Balun</text>
+                            <text x="100" y="110" text-anchor="middle" fill="#059669" font-size="10" font-weight="700">Coax Cable</text>
+                            <text x="100" y="25" text-anchor="middle" fill="#D97706" font-size="9" font-weight="700">Support</text>
+                        </svg>
+                    </div>
                     <div class="result-grid">
                         <div class="result-item">
                             <span class="label">Total Length:</span>
@@ -90,6 +138,33 @@
 
                 <div id="yagi-results" class="antenna-results">
                     <h3>Yagi Antenna</h3>
+                    <div class="antenna-illustration">
+                        <svg viewBox="0 0 200 160" class="antenna-svg">
+                            <!-- Boom -->
+                            <rect x="20" y="78" width="160" height="4" fill="#2F4F4F"/>
+                            <!-- Reflector (longest) -->
+                            <line x1="30" y1="80" x2="30" y2="45" stroke="#1E90FF" stroke-width="4"/>
+                            <!-- Driven element (middle) with feed -->
+                            <line x1="100" y1="80" x2="100" y2="50" stroke="#DC143C" stroke-width="4"/>
+                            <!-- Director (shortest) -->
+                            <line x1="170" y1="80" x2="170" y2="60" stroke="#1E90FF" stroke-width="4"/>
+                            <!-- Feed point with balun -->
+                            <circle cx="100" cy="80" r="6" fill="#DC143C"/>
+                            <rect x="95" y="90" width="10" height="20" fill="#DC143C"/>
+                            <!-- Coaxial cable -->
+                            <line x1="100" y1="110" x2="100" y2="130" stroke="#333" stroke-width="4"/>
+                            <line x1="90" y1="130" x2="110" y2="130" stroke="#333" stroke-width="2"/>
+                            <!-- Direction arrow -->
+                            <path d="M 170 80 L 190 80 M 185 75 L 190 80 L 185 85" stroke="#FFD700" stroke-width="3" fill="none"/>
+                            <!-- Labels -->
+                            <text x="30" y="40" text-anchor="middle" fill="#1E40AF" font-size="10" font-weight="700">Reflector</text>
+                            <text x="100" y="45" text-anchor="middle" fill="#DC2626" font-size="10" font-weight="700">Driven</text>
+                            <text x="170" y="65" text-anchor="middle" fill="#1E40AF" font-size="10" font-weight="700">Director</text>
+                            <text x="100" y="95" text-anchor="middle" fill="#DC2626" font-size="9" font-weight="700">Balun</text>
+                            <text x="100" y="140" text-anchor="middle" fill="#059669" font-size="9" font-weight="700">Coax Cable</text>
+                            <text x="100" y="20" text-anchor="middle" fill="#D97706" font-size="9" font-weight="700">Boom</text>
+                        </svg>
+                    </div>
                     <div class="result-grid">
                         <div class="result-item">
                             <span class="label">Driven Element:</span>
@@ -116,6 +191,30 @@
 
                 <div id="quad-results" class="antenna-results">
                     <h3>Quad Antenna</h3>
+                    <div class="antenna-illustration">
+                        <svg viewBox="0 0 200 160" class="antenna-svg">
+                            <!-- Square loop -->
+                            <rect x="50" y="40" width="100" height="100" fill="none" stroke="#1E90FF" stroke-width="4"/>
+                            <!-- Support structure -->
+                            <rect x="95" y="25" width="10" height="15" fill="#2F4F4F"/>
+                            <rect x="95" y="120" width="10" height="15" fill="#2F4F4F"/>
+                            <!-- Feed point with balun -->
+                            <circle cx="100" cy="90" r="6" fill="#DC143C"/>
+                            <rect x="95" y="100" width="10" height="20" fill="#DC143C"/>
+                            <!-- Coaxial cable -->
+                            <line x1="100" y1="120" x2="100" y2="140" stroke="#333" stroke-width="4"/>
+                            <line x1="90" y1="140" x2="110" y2="140" stroke="#333" stroke-width="2"/>
+                            <!-- Support lines -->
+                            <line x1="100" y1="40" x2="100" y2="25" stroke="#696969" stroke-width="2" stroke-dasharray="5,5"/>
+                            <line x1="100" y1="120" x2="100" y2="135" stroke="#696969" stroke-width="2" stroke-dasharray="5,5"/>
+                            <!-- Labels -->
+                            <text x="100" y="20" text-anchor="middle" fill="#D97706" font-size="9" font-weight="700">Support</text>
+                            <text x="100" y="140" text-anchor="middle" fill="#D97706" font-size="9" font-weight="700">Support</text>
+                            <text x="100" y="95" text-anchor="middle" fill="#DC2626" font-size="9" font-weight="700">Balun</text>
+                            <text x="100" y="155" text-anchor="middle" fill="#059669" font-size="9" font-weight="700">Coax Cable</text>
+                            <text x="100" y="35" text-anchor="middle" fill="#1E40AF" font-size="8" font-weight="700">Loop</text>
+                        </svg>
+                    </div>
                     <div class="result-grid">
                         <div class="result-item">
                             <span class="label">Loop Perimeter:</span>
