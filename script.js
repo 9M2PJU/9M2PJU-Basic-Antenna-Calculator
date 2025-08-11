@@ -48,10 +48,14 @@ function calculateAll() {
     const frequency = parseFloat(frequencyInput.value);
     if (isNaN(frequency) || frequency <= 0) return;
     
+    console.log('Calculating for frequency:', frequency, 'MHz');
+    
     calculateVertical(frequency);
     calculateDipole(frequency);
     calculateYagi(frequency);
     calculateQuad(frequency);
+    
+    console.log('All calculations completed');
 }
 
 function calculateVertical(frequency) {
@@ -59,12 +63,23 @@ function calculateVertical(frequency) {
     const quarterWavelength = (wavelength / 4) * VELOCITY_FACTOR;
     const groundPlaneLength = quarterWavelength * 0.95;
     
+    console.log('Vertical calculation - wavelength:', wavelength, 'quarter:', quarterWavelength);
+    
     document.getElementById('vertical-height').textContent = formatLength(quarterWavelength);
     document.getElementById('vertical-ground').textContent = formatLength(groundPlaneLength);
     document.getElementById('vertical-impedance').textContent = '36.8 Ω';
     document.getElementById('vertical-gain').textContent = '2.15 dBi';
-    document.getElementById('vertical-balun').textContent = 'Current Balun';
-    document.getElementById('vertical-balun-ratio').textContent = '1:1';
+    
+    const balunElement = document.getElementById('vertical-balun');
+    const ratioElement = document.getElementById('vertical-balun-ratio');
+    
+    if (balunElement && ratioElement) {
+        balunElement.textContent = 'Current Balun';
+        ratioElement.textContent = '1:1';
+        console.log('Vertical balun info set successfully');
+    } else {
+        console.error('Vertical balun elements not found:', { balun: balunElement, ratio: ratioElement });
+    }
 }
 
 function calculateDipole(frequency) {
