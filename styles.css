@@ -6,12 +6,10 @@
 
 /* Force reset for SVG elements */
 svg.antenna-svg {
-    width: 280px !important;
-    height: 224px !important;
-    max-width: 280px !important;
-    max-height: 224px !important;
-    min-width: 280px !important;
-    min-height: 224px !important;
+    width: 100%;
+    height: auto;
+    max-width: 320px;
+    max-height: 256px;
 }
 
 body {
@@ -61,7 +59,7 @@ html {
     background: white;
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    overflow: visible;
+    overflow: hidden; /* To contain the border-radius */
 }
 
 .input-section {
@@ -83,7 +81,7 @@ html {
 
 .frequency-input input {
     width: 100%;
-    max-width: 300px;
+    max-width: 100%; /* Changed from 300px */
     padding: 12px 16px;
     border: 2px solid #e2e8f0;
     border-radius: 10px;
@@ -163,19 +161,11 @@ html {
 .antenna-illustration {
     text-align: center;
     margin-bottom: 25px;
-    padding: 30px;
+    padding: 20px; /* Reduced padding */
     background: #ffffff;
     border-radius: 15px;
     border: 1px solid #e2e8f0;
     box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-}
-
-.antenna-svg {
-    width: 280px !important;
-    height: 224px !important;
-    max-width: 280px !important;
-    max-height: 224px !important;
-    filter: none;
 }
 
 .antenna-svg text {
@@ -185,7 +175,7 @@ html {
 
 .result-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Adjusted minmax */
     gap: 18px;
     margin-bottom: 20px;
 }
@@ -214,12 +204,11 @@ html {
 
 .info-section {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjusted minmax */
     gap: 20px;
     padding: 25px;
     background: #f8fafc;
     border-top: 1px solid #e2e8f0;
-    margin-bottom: 20px;
 }
 
 .info-card {
@@ -227,7 +216,7 @@ html {
     padding: 25px;
     border-radius: 12px;
     border: 1px solid #e2e8f0;
-    margin-bottom: 10px;
+    margin-bottom: 0; /* Removed margin */
 }
 
 .info-card h4 {
@@ -262,22 +251,6 @@ html {
 }
 
 /* Mobile-First Responsive Design */
-@media (max-width: 1200px) {
-    .container {
-        max-width: 95%;
-        padding: 15px;
-    }
-    
-    .result-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    }
-    
-    .antenna-svg {
-        width: 240px;
-        height: 192px;
-    }
-}
-
 @media (max-width: 768px) {
     .container {
         padding: 12px;
@@ -327,11 +300,6 @@ html {
     .calculator-container {
         border-radius: 15px;
         margin: 0 5px;
-    }
-    
-    .antenna-svg {
-        width: 200px;
-        height: 160px;
     }
 }
 
@@ -407,57 +375,48 @@ html {
         margin-bottom: 18px;
     }
     
-    .antenna-svg {
-        width: 180px;
-        height: 144px;
-    }
-    
     .antenna-svg text {
         font-size: 10px;
     }
 }
 
-@media (max-width: 360px) {
-    .header h1 {
-        font-size: 1.4rem;
+/* Desktop Layout */
+@media (min-width: 1024px) {
+    .main-content {
+        display: flex;
+        gap: 0; /* No gap, borders will handle spacing */
     }
-    
-    .header p {
-        font-size: 0.85rem;
+
+    .input-section {
+        flex: 0 0 380px; /* Fixed width for input section */
+        border-right: 1px solid #e2e8f0;
+        border-bottom: none;
+        padding-right: 25px;
     }
-    
-    .input-section,
-    .results-section,
-    .info-section {
-        padding: 12px;
+
+    .results-section {
+        flex: 1 1 auto;
+        padding-left: 25px;
     }
-    
-    .antenna-btn {
-        padding: 10px 14px;
-        font-size: 0.85rem;
-    }
-    
-    .result-item {
-        padding: 12px;
-    }
-    
-    .info-card {
-        padding: 15px;
+
+    .antenna-buttons {
+        flex-direction: column;
+        gap: 12px;
     }
 }
 
-/* Desktop Enhancements */
+/* Larger Desktop Enhancements */
 @media (min-width: 1201px) {
     .container {
         max-width: 1400px;
     }
     
     .result-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     }
     
     .info-section {
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
     }
     
     .antenna-btn:hover {
@@ -468,22 +427,12 @@ html {
     .calculator-container {
         box-shadow: 0 25px 50px rgba(0,0,0,0.15);
     }
-    
-    .antenna-svg {
-        width: 320px;
-        height: 256px;
-    }
 }
 
 /* Touch Device Optimizations */
 @media (hover: none) and (pointer: coarse) {
-    .antenna-btn {
-        min-height: 44px; /* Minimum touch target size */
-    }
-    
-    .frequency-input input {
-        min-height: 44px;
-        font-size: 16px;
+    .antenna-btn:active {
+        transform: scale(0.98);
     }
     
     .result-item {
@@ -499,35 +448,10 @@ html {
 /* High DPI Display Support */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     .antenna-btn {
-        border-width: 1px;
+        border-width: 1.5px;
     }
     
     .result-item {
-        border-left-width: 2px;
-    }
-}
-
-/* Landscape Mobile Optimization */
-@media (max-width: 768px) and (orientation: landscape) {
-    .header {
-        margin-bottom: 20px;
-    }
-    
-    .header h1 {
-        font-size: 1.8rem;
-    }
-    
-    .input-section {
-        padding: 20px 25px;
-    }
-    
-    .antenna-buttons {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-    
-    .antenna-btn {
-        flex: 1;
-        min-width: 120px;
+        border-left-width: 3px;
     }
 }
