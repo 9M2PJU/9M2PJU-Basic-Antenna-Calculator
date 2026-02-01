@@ -1,6 +1,6 @@
 {
   "name": "9M2PJU Antenna Calculator",
-  "short_name": "Antenna Calc",
+  "short_name": "9M2PJU Calc",
   "description": "Professional Antenna Calculator for Amateur Radio Operators",
   "start_url": "./index.html",
   "display": "standalone",
