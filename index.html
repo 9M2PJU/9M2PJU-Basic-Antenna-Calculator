@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -10,19 +11,33 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
-    <meta name="description" content="9M2PJU Basic Antenna Calculator. Calculate basic antennas like vertical, dipole, yagi, and quad.">
-	<meta name="keywords" content="amateur radio, radio ham, antenna, bina antenna, kira antenna, design antenna, radio amator, radio amatur, malaysia, ham radio, 9M2PJU, antenna.hamradio.my">
-	<meta name="author" content="9M2PJU">
-    
-    <title>9M2PJU Basic Antenna Calculator</title>
-    <link rel="stylesheet" href="styles.css?v=1.1">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description"
+        content="9M2PJU Basic Antenna Calculator. Calculate basic antennas like vertical, dipole, yagi, and quad.">
+    <meta name="keywords"
+        content="amateur radio, radio ham, antenna, bina antenna, kira antenna, design antenna, radio amator, radio amatur, malaysia, ham radio, 9M2PJU, antenna.hamradio.my">
+    <meta name="author" content="9M2PJU">
+
+    <title>9M2PJU Antenna Calculator</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="stylesheet" href="styles.css?v=1.3">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@400;700&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
         <header class="header">
-            <h1>📡 9M2PJU Basic Antenna Calculator</h1>
-            <p>Calculate dimensions and properties for common antenna types</p>
+            <div class="logo-container">
+                <img src="logo.png" alt="9M2PJU Logo" class="main-logo">
+            </div>
+            <h1>Antenna Calculator</h1>
+            <p>Cybertron Systems v2.0</p>
+            <button id="install-btn" class="install-btn" style="display: none;">
+                <span>Install App</span>
+            </button>
         </header>
 
         <div class="calculator-container">
@@ -30,24 +45,44 @@
                 <div class="input-section">
                     <div class="frequency-input">
                         <label for="frequency">Operating Frequency (MHz):</label>
-                        <input type="number"
-                               id="frequency"
-                               step="0.001"
-                               min="0.1"
-                               max="10000"
-                               value="14.074"
-                               placeholder="e.g., 14.074"
-                               inputmode="decimal"
-                               pattern="[0-9]*[.]?[0-9]+">
+                        <div class="input-with-badge">
+                            <input type="number" id="frequency" step="0.001" min="0.1" max="10000" value="14.074"
+                                placeholder="e.g., 14.074" inputmode="decimal" pattern="[0-9]*[.]?[0-9]+">
+                            <div id="band-info" class="band-badge">Band: 20m</div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="toggle-container">
+                            <span class="toggle-label">Metric</span>
+                            <label class="switch">
+                                <input type="checkbox" id="unit-toggle">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="toggle-label">Imperial</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="material-select">Wire Material:</label>
+                        <select id="material-select">
+                            <option value="copper_insulated">Insulated Copper (VF: 0.95)</option>
+                            <option value="copper_bare">Bare Copper (VF: 0.98)</option>
+                            <option value="aluminum">Aluminum Tubing (VF: 0.97)</option>
+                        </select>
+                        <div class="vf-info">Applied VF: <span id="vf-value">0.95</span></div>
                     </div>
 
                     <div class="antenna-selector">
                         <label>Antenna Type:</label>
                         <div class="antenna-buttons">
-                            <button class="antenna-btn active" data-type="vertical">Vertical</button>
-                            <button class="antenna-btn" data-type="dipole">Dipole</button>
-                            <button class="antenna-btn" data-type="yagi">Yagi</button>
-                            <button class="antenna-btn" data-type="quad">Quad</button>
+                            <button class="antenna-btn active" data-type="vertical">Vertical (λ/4)</button>
+                            <button class="antenna-btn" data-type="dipole">Dipole (λ/2)</button>
+                            <button class="antenna-btn" data-type="invertedv">Inverted V</button>
+                            <button class="antenna-btn" data-type="yagi">Yagi (3-Element)</button>
+                            <button class="antenna-btn" data-type="quad">Quad Loop</button>
+                            <button class="antenna-btn" data-type="jpole">J-Pole</button>
+                            <button class="antenna-btn" data-type="slimjim">Slim Jim</button>
                         </div>
                     </div>
                 </div>
@@ -57,67 +92,31 @@
                         <h3>Vertical Antenna</h3>
                         <div class="antenna-illustration">
                             <svg viewBox="0 0 300 200" class="antenna-svg">
-                                <!-- Background -->
-                                <rect x="0" y="0" width="300" height="200" fill="#F8FAFC" opacity="0.3"/>
-
-                                <!-- Ground plane -->
-                                <rect x="0" y="170" width="300" height="30" fill="#E2E8F0"/>
-                                <rect x="0" y="170" width="300" height="5" fill="#94A3B8"/>
-
-                                <!-- Vertical element -->
-                                <rect x="145" y="50" width="10" height="120" fill="#3B82F6"/>
-                                <rect x="143" y="45" width="14" height="8" fill="#1E40AF"/>
-
-                                <!-- Ground radials -->
-                                <line x1="150" y1="170" x2="80" y2="150" stroke="#F59E0B" stroke-width="4" stroke-linecap="round"/>
-                                <line x1="150" y1="170" x2="220" y2="150" stroke="#F59E0B" stroke-width="4" stroke-linecap="round"/>
-                                <line x1="150" y1="170" x2="60" y2="130" stroke="#F59E0B" stroke-width="4" stroke-linecap="round"/>
-                                <line x1="150" y1="170" x2="240" y2="130" stroke="#F59E0B" stroke-width="4" stroke-linecap="round"/>
-
-                                <!-- Feed point -->
-                                <circle cx="150" cy="170" r="8" fill="#EF4444"/>
-                                <circle cx="150" cy="170" r="4" fill="#FFFFFF"/>
-
-                                <!-- Coax cable -->
-                                <line x1="150" y1="178" x2="150" y2="195" stroke="#374151" stroke-width="5" stroke-linecap="round"/>
-                                <rect x="140" y="195" width="20" height="8" fill="#6B7280"/>
-
-                                <!-- Labels with background -->
-                                <rect x="120" y="25" width="60" height="20" fill="#FFFFFF" rx="10" opacity="0.9"/>
-                                <text x="150" y="38" text-anchor="middle" fill="#1E40AF" font-size="11" font-weight="700">λ/4 Height</text>
-
-                                <rect x="125" y="155" width="50" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                <text x="150" y="167" text-anchor="middle" fill="#DC2626" font-size="10" font-weight="700">Feed</text>
-
-                                <rect x="110" y="185" width="80" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                <text x="150" y="197" text-anchor="middle" fill="#059669" font-size="10" font-weight="700">Coax Cable</text>
+                                <rect x="0" y="170" width="300" height="30" fill="#E2E8F0" />
+                                <rect x="0" y="170" width="300" height="5" fill="#94A3B8" />
+                                <rect x="145" y="50" width="10" height="120" fill="#3B82F6" rx="2" />
+                                <line x1="150" y1="170" x2="80" y2="150" stroke="#F59E0B" stroke-width="4"
+                                    stroke-linecap="round" />
+                                <line x1="150" y1="170" x2="220" y2="150" stroke="#F59E0B" stroke-width="4"
+                                    stroke-linecap="round" />
+                                <circle cx="150" cy="170" r="8" fill="#EF4444" />
+                                <text x="150" y="40" text-anchor="middle" fill="#1E40AF" font-size="12"
+                                    font-weight="700">λ/4 Radiator</text>
                             </svg>
                         </div>
                         <div class="result-grid">
-                            <div class="result-item">
-                                <span class="label">Antenna Height:</span>
-                                <span class="value" id="vertical-height">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Ground Plane Length:</span>
-                                <span class="value" id="vertical-ground">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Impedance:</span>
-                                <span class="value" id="vertical-impedance">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Gain:</span>
-                                <span class="value" id="vertical-gain">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Balun Type:</span>
-                                <span class="value" id="vertical-balun">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Balun Ratio:</span>
-                                <span class="value" id="vertical-balun-ratio">-</span>
-                            </div>
+                            <div class="result-item"><span class="label">Radiator Height:</span><span class="value"
+                                    id="vertical-height">-</span></div>
+                            <div class="result-item"><span class="label">Radial Length (x4):</span><span class="value"
+                                    id="vertical-ground">-</span></div>
+                            <div class="result-item"><span class="label">Impedance:</span><span class="value"
+                                    id="vertical-impedance">-</span></div>
+                            <div class="result-item"><span class="label">Typical Gain:</span><span class="value"
+                                    id="vertical-gain">-</span></div>
+                            <div class="result-item"><span class="label">Balun:</span><span class="value"
+                                    id="vertical-balun">-</span></div>
+                            <div class="result-item"><span class="label">Ratio:</span><span class="value"
+                                    id="vertical-balun-ratio">-</span></div>
                         </div>
                     </div>
 
@@ -125,158 +124,76 @@
                         <h3>Dipole Antenna</h3>
                         <div class="antenna-illustration">
                             <svg viewBox="0 0 300 200" class="antenna-svg">
-                                <!-- Background -->
-                                <rect x="0" y="0" width="300" height="200" fill="#F8FAFC" opacity="0.3"/>
-
-                                <!-- Support structure -->
-                                <rect x="145" y="25" width="10" height="25" fill="#6B7280"/>
-                                <rect x="140" y="20" width="20" height="8" fill="#374151"/>
-
-                                <!-- Left element -->
-                                <line x1="150" y1="50" x2="50" y2="50" stroke="#3B82F6" stroke-width="5" stroke-linecap="round"/>
-                                <circle cx="50" cy="50" r="4" fill="#1E40AF"/>
-
-                                <!-- Right element -->
-                                <line x1="150" y1="50" x2="250" y2="50" stroke="#3B82F6" stroke-width="5" stroke-linecap="round"/>
-                                <circle cx="250" cy="50" r="4" fill="#1E40AF"/>
-
-                                <!-- Feed point with balun -->
-                                <circle cx="150" cy="50" r="10" fill="#EF4444"/>
-                                <circle cx="150" cy="50" r="5" fill="#FFFFFF"/>
-                                <rect x="145" y="60" width="10" height="25" fill="#DC2626"/>
-                                <rect x="140" y="85" width="20" height="8" fill="#B91C1C"/>
-
-                                <!-- Coax cable -->
-                                <line x1="150" y1="93" x2="150" y2="120" stroke="#374151" stroke-width="6" stroke-linecap="round"/>
-                                <rect x="130" y="120" width="40" height="10" fill="#6B7280"/>
-
-                                <!-- Support lines -->
-                                <line x1="150" y1="50" x2="150" y2="75" stroke="#9CA3AF" stroke-width="2" stroke-dasharray="6,6"/>
-
-                                <!-- Labels with background -->
-                                <rect x="35" y="35" width="30" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                <text x="50" y="47" text-anchor="middle" fill="#1E40AF" font-size="10" font-weight="700">Left</text>
-
-                                <rect x="235" y="35" width="30" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                <text x="250" y="47" text-anchor="middle" fill="#1E40AF" font-size="10" font-weight="700">Right</text>
-
-                                <rect x="125" y="70" width="50" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                <text x="150" y="82" text-anchor="middle" fill="#DC2626" font-size="10" font-weight="700">Balun</text>
-
-                                <rect x="110" y="125" width="80" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                <text x="150" y="137" text-anchor="middle" fill="#059669" font-size="10" font-weight="700">Coax Cable</text>
+                                <line x1="150" y1="50" x2="50" y2="50" stroke="#3B82F6" stroke-width="5"
+                                    stroke-linecap="round" />
+                                <line x1="150" y1="50" x2="250" y2="50" stroke="#3B82F6" stroke-width="5"
+                                    stroke-linecap="round" />
+                                <circle cx="150" cy="50" r="8" fill="#EF4444" />
+                                <text x="150" y="40" text-anchor="middle" fill="#1E40AF" font-size="12"
+                                    font-weight="700">λ/2 Dipole</text>
                             </svg>
                         </div>
                         <div class="result-grid">
-                            <div class="result-item">
-                                <span class="label">Total Length:</span>
-                                <span class="value" id="dipole-length">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Each Side:</span>
-                                <span class="value" id="dipole-side">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Impedance:</span>
-                                <span class="value" id="dipole-impedance">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Gain:</span>
-                                <span class="value" id="dipole-gain">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Balun Type:</span>
-                                <span class="value" id="dipole-balun">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Balun Ratio:</span>
-                                <span class="value" id="dipole-balun-ratio">-</span>
-                            </div>
+                            <div class="result-item"><span class="label">Total Length:</span><span class="value"
+                                    id="dipole-length">-</span></div>
+                            <div class="result-item"><span class="label">Each Side:</span><span class="value"
+                                    id="dipole-side">-</span></div>
+                            <div class="result-item"><span class="label">Impedance:</span><span class="value"
+                                    id="dipole-impedance">-</span></div>
+                            <div class="result-item"><span class="label">Typical Gain:</span><span class="value"
+                                    id="dipole-gain">-</span></div>
+                            <div class="result-item"><span class="label">Balun:</span><span class="value"
+                                    id="dipole-balun">-</span></div>
+                            <div class="result-item"><span class="label">Ratio:</span><span class="value"
+                                    id="dipole-balun-ratio">-</span></div>
+                        </div>
+                    </div>
+
+                    <div id="invertedv-results" class="antenna-results">
+                        <h3>Inverted V</h3>
+                        <div class="antenna-illustration">
+                            <svg viewBox="0 0 300 200" class="antenna-svg">
+                                <line x1="150" y1="50" x2="80" y2="150" stroke="#3B82F6" stroke-width="5"
+                                    stroke-linecap="round" />
+                                <line x1="150" y1="50" x2="220" y2="150" stroke="#3B82F6" stroke-width="5"
+                                    stroke-linecap="round" />
+                                <circle cx="150" cy="50" r="8" fill="#EF4444" />
+                                <text x="150" y="40" text-anchor="middle" fill="#1E40AF" font-size="12"
+                                    font-weight="700">Inverted V (120°)</text>
+                            </svg>
+                        </div>
+                        <div class="result-grid">
+                            <div class="result-item"><span class="label">Total Length:</span><span class="value"
+                                    id="invertedv-length">-</span></div>
+                            <div class="result-item"><span class="label">Each Side:</span><span class="value"
+                                    id="invertedv-side">-</span></div>
+                            <div class="result-item"><span class="label">Impedance:</span><span class="value"
+                                    id="invertedv-impedance">-</span></div>
                         </div>
                     </div>
 
                     <div id="yagi-results" class="antenna-results">
-                        <h3>Yagi Antenna</h3>
+                        <h3>Yagi Antenna (3-Element)</h3>
                         <div class="antenna-illustration">
                             <svg viewBox="0 0 300 200" class="antenna-svg">
-                                <!-- Background -->
-                                <rect x="0" y="0" width="300" height="200" fill="#F8FAFC" opacity="0.3"/>
-
-                                <!-- Boom -->
-                                <rect x="25" y="95" width="250" height="6" fill="#6B7280"/>
-                                <rect x="20" y="92" width="260" height="12" fill="#374151" opacity="0.3"/>
-
-                                <!-- Reflector (longest) -->
-                                <line x1="50" y1="98" x2="50" y2="45" stroke="#3B82F6" stroke-width="6" stroke-linecap="round"/>
-                                <circle cx="50" cy="45" r="4" fill="#1E40AF"/>
-
-                                <!-- Driven element (middle) with feed -->
-                                <line x1="150" y1="98" x2="150" y2="55" stroke="#EF4444" stroke-width="6" stroke-linecap="round"/>
-                                <circle cx="150" cy="55" r="4" fill="#DC2626"/>
-
-                                <!-- Director (shortest) -->
-                                <line x1="250" y1="98" x2="250" y2="70" stroke="#3B82F6" stroke-width="6" stroke-linecap="round"/>
-                                <circle cx="250" cy="70" r="4" fill="#1E40AF"/>
-
-                                <!-- Feed point with balun -->
-                                <circle cx="150" cy="98" r="8" fill="#EF4444"/>
-                                <circle cx="150" cy="98" r="4" fill="#FFFFFF"/>
-                                <rect x="145" y="106" width="10" height="25" fill="#DC2626"/>
-                                <rect x="140" y="131" width="20" height="8" fill="#B91C1C"/>
-
-                                <!-- Coaxial cable -->
-                                <line x1="150" y1="139" x2="150" y2="165" stroke="#374151" stroke-width="6" stroke-linecap="round"/>
-                                <rect x="130" y="165" width="40" height="10" fill="#6B7280"/>
-
-                                <!-- Direction arrow -->
-                                <path d="M 250 98 L 280 98 M 275 93 L 280 98 L 275 103" stroke="#F59E0B" stroke-width="4" fill="none" stroke-linecap="round"/>
-
-                                <!-- Labels with background -->
-                                <rect x="35" y="30" width="30" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                <text x="50" y="42" text-anchor="middle" fill="#1E40AF" font-size="10" font-weight="700">Reflector</text>
-
-                                <rect x="135" y="40" width="30" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                <text x="150" y="52" text-anchor="middle" fill="#DC2626" font-size="10" font-weight="700">Driven</text>
-
-                                <rect x="235" y="55" width="30" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                <text x="250" y="67" text-anchor="middle" fill="#1E40AF" font-size="10" font-weight="700">Director</text>
-
-                                <rect x="125" y="110" width="50" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                <text x="150" y="122" text-anchor="middle" fill="#DC2626" font-size="10" font-weight="700">Balun</text>
-
-                                <rect x="110" y="170" width="80" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                <text x="150" y="182" text-anchor="middle" fill="#059669" font-size="10" font-weight="700">Coax Cable</text>
+                                <rect x="25" y="95" width="250" height="6" fill="#6B7280" />
+                                <line x1="50" y1="50" x2="50" y2="150" stroke="#3B82F6" stroke-width="6" />
+                                <line x1="150" y1="60" x2="150" y2="140" stroke="#EF4444" stroke-width="6" />
+                                <line x1="250" y1="70" x2="250" y2="130" stroke="#3B82F6" stroke-width="6" />
+                                <text x="50" y="40" text-anchor="middle" fill="#475569" font-size="10">Reflector</text>
+                                <text x="150" y="50" text-anchor="middle" fill="#DC2626" font-size="10">Driven</text>
+                                <text x="250" y="60" text-anchor="middle" fill="#475569" font-size="10">Director</text>
                             </svg>
                         </div>
                         <div class="result-grid">
-                            <div class="result-item">
-                                <span class="label">Driven Element:</span>
-                                <span class="value" id="yagi-driven">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Reflector:</span>
-                                <span class="value" id="yagi-reflector">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Director:</span>
-                                <span class="value" id="yagi-director">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Boom Length:</span>
-                                <span class="value" id="yagi-boom">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Gain:</span>
-                                <span class="value" id="yagi-gain">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Balun Type:</span>
-                                <span class="value" id="yagi-balun">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Balun Ratio:</span>
-                                <span class="value" id="yagi-balun-ratio">-</span>
-                            </div>
+                            <div class="result-item"><span class="label">Driven Element:</span><span class="value"
+                                    id="yagi-driven">-</span></div>
+                            <div class="result-item"><span class="label">Reflector:</span><span class="value"
+                                    id="yagi-reflector">-</span></div>
+                            <div class="result-item"><span class="label">Director:</span><span class="value"
+                                    id="yagi-director">-</span></div>
+                            <div class="result-item"><span class="label">Boom Length:</span><span class="value"
+                                    id="yagi-boom">-</span></div>
                         </div>
                     </div>
 
@@ -284,77 +201,60 @@
                         <h3>Quad Antenna</h3>
                         <div class="antenna-illustration">
                             <svg viewBox="0 0 300 200" class="antenna-svg">
-                                <g transform="translate(0, -15)">
-                                    <!-- Background -->
-                                    <rect x="0" y="0" width="300" height="200" fill="#F8FAFC" opacity="0.3"/>
-
-                                    <!-- Square loop -->
-                                    <rect x="75" y="50" width="150" height="150" fill="none" stroke="#3B82F6" stroke-width="5" rx="8"/>
-                                    <rect x="70" y="45" width="160" height="160" fill="none" stroke="#1E40AF" stroke-width="2" rx="10" opacity="0.3"/>
-
-                                    <!-- Support structures -->
-                                    <rect x="145" y="30" width="10" height="20" fill="#6B7280"/>
-                                    <rect x="140" y="25" width="20" height="8" fill="#374151"/>
-                                    <rect x="145" y="150" width="10" height="20" fill="#6B7280"/>
-                                    <rect x="140" y="145" width="20" height="8" fill="#374151"/>
-
-                                    <!-- Feed point with balun -->
-                                    <circle cx="150" cy="125" r="8" fill="#EF4444"/>
-                                    <circle cx="150" cy="125" r="4" fill="#FFFFFF"/>
-                                    <rect x="145" y="133" width="10" height="25" fill="#DC2626"/>
-                                    <rect x="140" y="158" width="20" height="8" fill="#B91C1C"/>
-
-                                    <!-- Coaxial cable -->
-                                    <line x1="150" y1="166" x2="150" y2="185" stroke="#374151" stroke-width="6" stroke-linecap="round"/>
-                                    <rect x="130" y="185" width="40" height="10" fill="#6B7280"/>
-
-                                    <!-- Support lines -->
-                                    <line x1="150" y1="50" x2="150" y2="30" stroke="#9CA3AF" stroke-width="2" stroke-dasharray="6,6"/>
-                                    <line x1="150" y1="150" x2="150" y2="170" stroke="#9CA3AF" stroke-width="2" stroke-dasharray="6,6"/>
-
-                                    <!-- Labels with background -->
-                                    <rect x="125" y="20" width="50" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                    <text x="150" y="32" text-anchor="middle" fill="#D97706" font-size="10" font-weight="700">Support</text>
-
-                                    <rect x="125" y="160" width="50" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                    <text x="150" y="172" text-anchor="middle" fill="#D97706" font-size="10" font-weight="700">Support</text>
-
-                                    <rect x="125" y="110" width="50" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                    <text x="150" y="122" text-anchor="middle" fill="#DC2626" font-size="10" font-weight="700">Balun</text>
-
-                                    <rect x="110" y="190" width="80" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                    <text x="150" y="202" text-anchor="middle" fill="#059669" font-size="10" font-weight="700">Coax Cable</text>
-
-                                    <rect x="110" y="40" width="80" height="18" fill="#FFFFFF" rx="9" opacity="0.9"/>
-                                    <text x="150" y="52" text-anchor="middle" fill="#1E40AF" font-size="10" font-weight="700">Loop</text>
-                                </g>
+                                <rect x="75" y="25" width="150" height="150" fill="none" stroke="#3B82F6"
+                                    stroke-width="5" />
+                                <circle cx="150" cy="175" r="8" fill="#EF4444" />
+                                <text x="150" y="20" text-anchor="middle" fill="#1E40AF" font-size="12"
+                                    font-weight="700">λ Loop</text>
                             </svg>
                         </div>
                         <div class="result-grid">
-                            <div class="result-item">
-                                <span class="label">Loop Perimeter:</span>
-                                <span class="value" id="quad-perimeter">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Side Length:</span>
-                                <span class="value" id="quad-side">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Impedance:</span>
-                                <span class="value" id="quad-impedance">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Gain:</span>
-                                <span class="value" id="quad-gain">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Balun Type:</span>
-                                <span class="value" id="quad-balun">-</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="label">Balun Ratio:</span>
-                                <span class="value" id="quad-balun-ratio">-</span>
-                            </div>
+                            <div class="result-item"><span class="label">Perimeter:</span><span class="value"
+                                    id="quad-perimeter">-</span></div>
+                            <div class="result-item"><span class="label">Side Length:</span><span class="value"
+                                    id="quad-side">-</span></div>
+                            <div class="result-item"><span class="label">Impedance:</span><span class="value"
+                                    id="quad-impedance">-</span></div>
+                        </div>
+                    </div>
+
+                    <div id="jpole-results" class="antenna-results">
+                        <h3>J-Pole Antenna</h3>
+                        <div class="antenna-illustration">
+                            <svg viewBox="0 0 300 200" class="antenna-svg">
+                                <line x1="140" y1="20" x2="140" y2="180" stroke="#3B82F6" stroke-width="8" />
+                                <line x1="160" y1="120" x2="160" y2="180" stroke="#3B82F6" stroke-width="8" />
+                                <line x1="140" y1="180" x2="160" y2="180" stroke="#3B82F6" stroke-width="8" />
+                                <text x="150" y="195" text-anchor="middle" fill="#1E40AF" font-size="10">End Fed
+                                    λ/2</text>
+                            </svg>
+                        </div>
+                        <div class="result-grid">
+                            <div class="result-item"><span class="label">Total Height:</span><span class="value"
+                                    id="jpole-total">-</span></div>
+                            <div class="result-item"><span class="label">Stubs Length:</span><span class="value"
+                                    id="jpole-stub">-</span></div>
+                            <div class="result-item"><span class="label">Feed Point:</span><span class="value"
+                                    id="jpole-feed">-</span></div>
+                        </div>
+                    </div>
+
+                    <div id="slimjim-results" class="antenna-results">
+                        <h3>Slim Jim Antenna</h3>
+                        <div class="antenna-illustration">
+                            <svg viewBox="0 0 300 200" class="antenna-svg">
+                                <rect x="140" y="20" width="20" height="160" fill="none" stroke="#3B82F6"
+                                    stroke-width="6" />
+                                <line x1="140" y1="60" x2="140" y2="80" stroke="white" stroke-width="8" />
+                                <text x="150" y="195" text-anchor="middle" fill="#1E40AF" font-size="10">Folded
+                                    λ/2</text>
+                            </svg>
+                        </div>
+                        <div class="result-grid">
+                            <div class="result-item"><span class="label">Total Height:</span><span class="value"
+                                    id="slimjim-total">-</span></div>
+                            <div class="result-item"><span class="label">Gap Length:</span><span class="value"
+                                    id="slimjim-gap">-</span></div>
                         </div>
                     </div>
                 </div>
@@ -362,37 +262,34 @@
 
             <div class="info-section">
                 <div class="info-card">
-                    <h4>📊 Calculations Include:</h4>
+                    <h4>📊 Accurate Math</h4>
                     <ul>
-                        <li>Velocity factor compensation</li>
-                        <li>Standard impedance values</li>
-                        <li>Typical gain figures</li>
-                        <li>Practical dimensions</li>
-                        <li>Balun type & ratio</li>
+                        <li>Velocity factor applied</li>
+                        <li>Band synchronization</li>
+                        <li>Material-specific VF</li>
+                        <li>High precision outputs</li>
                     </ul>
                 </div>
                 <div class="info-card">
-                    <h4>⚠️ Notes:</h4>
+                    <h4>🛠️ Construction Tips</h4>
                     <ul>
-                        <li>Dimensions are theoretical</li>
-                        <li>Fine-tuning may be required</li>
-                        <li>Consider local conditions</li>
-                        <li>Check local regulations</li>
+                        <li>Leave ends long for tuning</li>
+                        <li>Use high-quality baluns</li>
+                        <li>Keep feed line clear</li>
+                        <li>Weatherproof connections</li>
                     </ul>
                 </div>
                 <div class="info-card">
-                    <h4>🔌 Balun Information:</h4>
-                    <ul>
-                        <li><strong>Current Balun:</strong> For balanced loads (dipole, vertical, yagi)</li>
-                        <li><strong>Voltage Balun:</strong> For high impedance loads (quad, loop)</li>
-                        <li><strong>1:1 Ratio:</strong> No impedance transformation</li>
-                        <li><strong>4:1 Ratio:</strong> Transforms 300Ω to 75Ω</li>
-                    </ul>
+                    <h4>📡 9M2PJU My-HamCall</h4>
+                    <p style="font-size: 0.85rem; color: #64748b; margin-top: 10px;">
+                        Professional tool for amateur radio operators. Hosted on GitHub Pages for the community.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="script.js?v=1.1"></script>
+    <script src="script.js?v=1.2"></script>
 </body>
+
 </html>
