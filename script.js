@@ -75,6 +75,12 @@ function setupEventListeners() {
             state.antennaType = btn.dataset.type;
             updateUI();
             calculateAll();
+
+            // Auto-scroll to results on mobile/small screens
+            const resultSection = document.getElementById(`${state.antennaType}-results`);
+            if (resultSection) {
+                resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         });
     });
 
