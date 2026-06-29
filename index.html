@@ -3,294 +3,128 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#667eea">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0b0d0e">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-
+    <meta name="apple-mobile-web-app-title" content="9M2PJU Antenna">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="description"
-        content="9M2PJU Basic Antenna Calculator. Calculate basic antennas like vertical, dipole, yagi, and quad.">
+        content="9M2PJU amateur radio antenna calculator with wire antennas, verticals, beams, loops, baluns, ununs, feedline and stub tools.">
     <meta name="keywords"
-        content="amateur radio, radio ham, antenna, bina antenna, kira antenna, design antenna, radio amator, radio amatur, malaysia, ham radio, 9M2PJU, antenna.hamradio.my">
+        content="amateur radio, ham radio, antenna calculator, balun, unun, coax stub, dipole, EFHW, vertical, yagi, moxon, loop, 9M2PJU">
     <meta name="author" content="9M2PJU">
 
     <title>9M2PJU Antenna Calculator</title>
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
-    <link rel="stylesheet" href="styles.css?v=1.3">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@400;700&display=swap"
-        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <div class="container">
+    <div class="app-shell">
         <header class="header">
-            <div class="logo-container">
+            <div class="brand">
                 <img src="logo.png" alt="9M2PJU Logo" class="main-logo">
+                <div>
+                    <h1>9M2PJU Antenna Calculator</h1>
+                    <p>Amateur radio antenna, matching, feedline and stub toolkit</p>
+                </div>
             </div>
-            <h1>9M2PJU Antenna Calculator</h1>
-            <p>High Performance Radio Antenna Design Suite</p>
-            <button id="install-btn" class="install-btn" style="display: none;">
-                <span>Install App</span>
-            </button>
+            <button id="install-btn" class="install-btn" hidden>Install App</button>
         </header>
 
-        <div class="calculator-container">
-            <div class="main-content">
-                <div class="input-section">
-                    <div class="frequency-input">
-                        <label for="frequency">Operating Frequency (MHz):</label>
-                        <div class="input-with-badge">
-                            <input type="number" id="frequency" step="0.001" min="0.1" max="10000" value="14.074"
-                                placeholder="e.g., 14.074" inputmode="decimal" pattern="[0-9]*[.]?[0-9]+">
-                            <div id="band-info" class="band-badge">Band: 20m</div>
+        <main class="calculator">
+            <aside class="controls" aria-label="Calculator controls">
+                <section class="control-panel">
+                    <h2>Inputs</h2>
+
+                    <label for="frequency">Operating Frequency (MHz)</label>
+                    <input type="number" id="frequency" step="0.001" min="0.1" max="10000" value="14.074"
+                        placeholder="14.074" inputmode="decimal">
+                    <div id="band-info" class="band-badge">Band: 20m</div>
+
+                    <div class="two-col">
+                        <div>
+                            <label for="material-select">Element Material</label>
+                            <select id="material-select">
+                                <option value="copper_insulated">Insulated Copper (VF 0.95)</option>
+                                <option value="copper_bare">Bare Copper (VF 0.98)</option>
+                                <option value="aluminum">Aluminum Tubing (VF 0.97)</option>
+                                <option value="ladder_line">Open Wire / Ladder Line (VF 0.90)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="coax-vf">Coax VF</label>
+                            <input type="number" id="coax-vf" step="0.01" min="0.45" max="1" value="0.66"
+                                inputmode="decimal">
                         </div>
                     </div>
 
-                    <div class="control-group">
-                        <div class="toggle-container">
-                            <span class="toggle-label">Metric</span>
-                            <label class="switch">
-                                <input type="checkbox" id="unit-toggle">
-                                <span class="slider round"></span>
-                            </label>
-                            <span class="toggle-label">Imperial</span>
+                    <div class="two-col">
+                        <div>
+                            <label for="source-z">Source Z (ohms)</label>
+                            <input type="number" id="source-z" step="1" min="1" value="50" inputmode="decimal">
+                        </div>
+                        <div>
+                            <label for="load-z">Load Z (ohms)</label>
+                            <input type="number" id="load-z" step="1" min="1" value="450" inputmode="decimal">
                         </div>
                     </div>
 
-                    <div class="control-group">
-                        <label for="material-select">Wire Material:</label>
-                        <select id="material-select">
-                            <option value="copper_insulated">Insulated Copper (VF: 0.95)</option>
-                            <option value="copper_bare">Bare Copper (VF: 0.98)</option>
-                            <option value="aluminum">Aluminum Tubing (VF: 0.97)</option>
-                        </select>
-                        <div class="vf-info">Applied VF: <span id="vf-value">0.95</span></div>
+                    <div class="unit-row">
+                        <span>Metric</span>
+                        <label class="switch" aria-label="Toggle unit system">
+                            <input type="checkbox" id="unit-toggle">
+                            <span class="slider"></span>
+                        </label>
+                        <span>Imperial</span>
                     </div>
+                </section>
 
-                    <div class="antenna-selector">
-                        <label>Antenna Type:</label>
-                        <div class="antenna-buttons">
-                            <button class="antenna-btn active" data-type="vertical">Vertical (λ/4)</button>
-                            <button class="antenna-btn" data-type="dipole">Dipole (λ/2)</button>
-                            <button class="antenna-btn" data-type="invertedv">Inverted V</button>
-                            <button class="antenna-btn" data-type="yagi">Yagi (3-Element)</button>
-                            <button class="antenna-btn" data-type="quad">Quad Loop</button>
-                            <button class="antenna-btn" data-type="jpole">J-Pole</button>
-                            <button class="antenna-btn" data-type="slimjim">Slim Jim</button>
-                        </div>
+                <section class="control-panel">
+                    <h2>Category</h2>
+                    <div id="category-tabs" class="category-tabs"></div>
+                </section>
+
+                <section class="control-panel">
+                    <h2>Calculator</h2>
+                    <div id="tool-list" class="tool-list"></div>
+                </section>
+            </aside>
+
+            <section class="workspace" aria-live="polite">
+                <div class="workspace-head">
+                    <div>
+                        <p id="tool-category" class="eyebrow">Wire Antennas</p>
+                        <h2 id="tool-title">Dipole</h2>
                     </div>
+                    <span id="tool-type" class="type-pill">Antenna</span>
                 </div>
 
-                <div class="results-section">
-                    <div id="vertical-results" class="antenna-results active">
-                        <h3>Vertical Antenna</h3>
-                        <div class="antenna-illustration">
-                            <svg viewBox="0 0 300 200" class="antenna-svg">
-                                <rect x="0" y="170" width="300" height="30" fill="#E2E8F0" />
-                                <rect x="0" y="170" width="300" height="5" fill="#94A3B8" />
-                                <rect x="145" y="50" width="10" height="120" fill="#3B82F6" rx="2" />
-                                <line x1="150" y1="170" x2="80" y2="150" stroke="#F59E0B" stroke-width="4"
-                                    stroke-linecap="round" />
-                                <line x1="150" y1="170" x2="220" y2="150" stroke="#F59E0B" stroke-width="4"
-                                    stroke-linecap="round" />
-                                <circle cx="150" cy="170" r="8" fill="#EF4444" />
-                                <text x="150" y="40" text-anchor="middle" fill="#1E40AF" font-size="12"
-                                    font-weight="700">λ/4 Radiator</text>
-                            </svg>
-                        </div>
-                        <div class="result-grid">
-                            <div class="result-item"><span class="label">Radiator Height:</span><span class="value"
-                                    id="vertical-height">-</span></div>
-                            <div class="result-item"><span class="label">Radial Length (x4):</span><span class="value"
-                                    id="vertical-ground">-</span></div>
-                            <div class="result-item"><span class="label">Impedance:</span><span class="value"
-                                    id="vertical-impedance">-</span></div>
-                            <div class="result-item"><span class="label">Typical Gain:</span><span class="value"
-                                    id="vertical-gain">-</span></div>
-                            <div class="result-item"><span class="label">Balun:</span><span class="value"
-                                    id="vertical-balun">-</span></div>
-                            <div class="result-item"><span class="label">Ratio:</span><span class="value"
-                                    id="vertical-balun-ratio">-</span></div>
-                        </div>
-                    </div>
+                <div id="tool-visual" class="tool-visual" aria-hidden="true"></div>
+                <div id="result-grid" class="result-grid"></div>
+                <div id="notes-panel" class="notes-panel"></div>
+            </section>
+        </main>
 
-                    <div id="dipole-results" class="antenna-results">
-                        <h3>Dipole Antenna</h3>
-                        <div class="antenna-illustration">
-                            <svg viewBox="0 0 300 200" class="antenna-svg">
-                                <line x1="150" y1="50" x2="50" y2="50" stroke="#3B82F6" stroke-width="5"
-                                    stroke-linecap="round" />
-                                <line x1="150" y1="50" x2="250" y2="50" stroke="#3B82F6" stroke-width="5"
-                                    stroke-linecap="round" />
-                                <circle cx="150" cy="50" r="8" fill="#EF4444" />
-                                <text x="150" y="40" text-anchor="middle" fill="#1E40AF" font-size="12"
-                                    font-weight="700">λ/2 Dipole</text>
-                            </svg>
-                        </div>
-                        <div class="result-grid">
-                            <div class="result-item"><span class="label">Total Length:</span><span class="value"
-                                    id="dipole-length">-</span></div>
-                            <div class="result-item"><span class="label">Each Side:</span><span class="value"
-                                    id="dipole-side">-</span></div>
-                            <div class="result-item"><span class="label">Impedance:</span><span class="value"
-                                    id="dipole-impedance">-</span></div>
-                            <div class="result-item"><span class="label">Typical Gain:</span><span class="value"
-                                    id="dipole-gain">-</span></div>
-                            <div class="result-item"><span class="label">Balun:</span><span class="value"
-                                    id="dipole-balun">-</span></div>
-                            <div class="result-item"><span class="label">Ratio:</span><span class="value"
-                                    id="dipole-balun-ratio">-</span></div>
-                        </div>
-                    </div>
-
-                    <div id="invertedv-results" class="antenna-results">
-                        <h3>Inverted V</h3>
-                        <div class="antenna-illustration">
-                            <svg viewBox="0 0 300 200" class="antenna-svg">
-                                <line x1="150" y1="50" x2="80" y2="150" stroke="#3B82F6" stroke-width="5"
-                                    stroke-linecap="round" />
-                                <line x1="150" y1="50" x2="220" y2="150" stroke="#3B82F6" stroke-width="5"
-                                    stroke-linecap="round" />
-                                <circle cx="150" cy="50" r="8" fill="#EF4444" />
-                                <text x="150" y="40" text-anchor="middle" fill="#1E40AF" font-size="12"
-                                    font-weight="700">Inverted V (120°)</text>
-                            </svg>
-                        </div>
-                        <div class="result-grid">
-                            <div class="result-item"><span class="label">Total Length:</span><span class="value"
-                                    id="invertedv-length">-</span></div>
-                            <div class="result-item"><span class="label">Each Side:</span><span class="value"
-                                    id="invertedv-side">-</span></div>
-                            <div class="result-item"><span class="label">Impedance:</span><span class="value"
-                                    id="invertedv-impedance">-</span></div>
-                        </div>
-                    </div>
-
-                    <div id="yagi-results" class="antenna-results">
-                        <h3>Yagi Antenna (3-Element)</h3>
-                        <div class="antenna-illustration">
-                            <svg viewBox="0 0 300 200" class="antenna-svg">
-                                <rect x="25" y="95" width="250" height="6" fill="#6B7280" />
-                                <line x1="50" y1="50" x2="50" y2="150" stroke="#3B82F6" stroke-width="6" />
-                                <line x1="150" y1="60" x2="150" y2="140" stroke="#EF4444" stroke-width="6" />
-                                <line x1="250" y1="70" x2="250" y2="130" stroke="#3B82F6" stroke-width="6" />
-                                <text x="50" y="40" text-anchor="middle" fill="#475569" font-size="10">Reflector</text>
-                                <text x="150" y="50" text-anchor="middle" fill="#DC2626" font-size="10">Driven</text>
-                                <text x="250" y="60" text-anchor="middle" fill="#475569" font-size="10">Director</text>
-                            </svg>
-                        </div>
-                        <div class="result-grid">
-                            <div class="result-item"><span class="label">Driven Element:</span><span class="value"
-                                    id="yagi-driven">-</span></div>
-                            <div class="result-item"><span class="label">Reflector:</span><span class="value"
-                                    id="yagi-reflector">-</span></div>
-                            <div class="result-item"><span class="label">Director:</span><span class="value"
-                                    id="yagi-director">-</span></div>
-                            <div class="result-item"><span class="label">Boom Length:</span><span class="value"
-                                    id="yagi-boom">-</span></div>
-                        </div>
-                    </div>
-
-                    <div id="quad-results" class="antenna-results">
-                        <h3>Quad Antenna</h3>
-                        <div class="antenna-illustration">
-                            <svg viewBox="0 0 300 200" class="antenna-svg">
-                                <rect x="75" y="25" width="150" height="150" fill="none" stroke="#3B82F6"
-                                    stroke-width="5" />
-                                <circle cx="150" cy="175" r="8" fill="#EF4444" />
-                                <text x="150" y="20" text-anchor="middle" fill="#1E40AF" font-size="12"
-                                    font-weight="700">λ Loop</text>
-                            </svg>
-                        </div>
-                        <div class="result-grid">
-                            <div class="result-item"><span class="label">Perimeter:</span><span class="value"
-                                    id="quad-perimeter">-</span></div>
-                            <div class="result-item"><span class="label">Side Length:</span><span class="value"
-                                    id="quad-side">-</span></div>
-                            <div class="result-item"><span class="label">Impedance:</span><span class="value"
-                                    id="quad-impedance">-</span></div>
-                        </div>
-                    </div>
-
-                    <div id="jpole-results" class="antenna-results">
-                        <h3>J-Pole Antenna</h3>
-                        <div class="antenna-illustration">
-                            <svg viewBox="0 0 300 200" class="antenna-svg">
-                                <line x1="140" y1="20" x2="140" y2="180" stroke="#3B82F6" stroke-width="8" />
-                                <line x1="160" y1="120" x2="160" y2="180" stroke="#3B82F6" stroke-width="8" />
-                                <line x1="140" y1="180" x2="160" y2="180" stroke="#3B82F6" stroke-width="8" />
-                                <text x="150" y="195" text-anchor="middle" fill="#1E40AF" font-size="10">End Fed
-                                    λ/2</text>
-                            </svg>
-                        </div>
-                        <div class="result-grid">
-                            <div class="result-item"><span class="label">Total Height:</span><span class="value"
-                                    id="jpole-total">-</span></div>
-                            <div class="result-item"><span class="label">Stubs Length:</span><span class="value"
-                                    id="jpole-stub">-</span></div>
-                            <div class="result-item"><span class="label">Feed Point:</span><span class="value"
-                                    id="jpole-feed">-</span></div>
-                        </div>
-                    </div>
-
-                    <div id="slimjim-results" class="antenna-results">
-                        <h3>Slim Jim Antenna</h3>
-                        <div class="antenna-illustration">
-                            <svg viewBox="0 0 300 200" class="antenna-svg">
-                                <rect x="140" y="20" width="20" height="160" fill="none" stroke="#3B82F6"
-                                    stroke-width="6" />
-                                <line x1="140" y1="60" x2="140" y2="80" stroke="white" stroke-width="8" />
-                                <text x="150" y="195" text-anchor="middle" fill="#1E40AF" font-size="10">Folded
-                                    λ/2</text>
-                            </svg>
-                        </div>
-                        <div class="result-grid">
-                            <div class="result-item"><span class="label">Total Height:</span><span class="value"
-                                    id="slimjim-total">-</span></div>
-                            <div class="result-item"><span class="label">Gap Length:</span><span class="value"
-                                    id="slimjim-gap">-</span></div>
-                        </div>
-                    </div>
-                </div>
+        <section class="reference-strip" aria-label="Application notes">
+            <div>
+                <strong>Practical dimensions</strong>
+                <span>Start slightly long, install in final position, then trim while measuring SWR or resonance.</span>
             </div>
-
-            <div class="info-section">
-                <div class="info-card">
-                    <h4>📊 Accurate Math</h4>
-                    <ul>
-                        <li>Velocity factor applied</li>
-                        <li>Band synchronization</li>
-                        <li>Material-specific VF</li>
-                        <li>High precision outputs</li>
-                    </ul>
-                </div>
-                <div class="info-card">
-                    <h4>🛠️ Construction Tips</h4>
-                    <ul>
-                        <li>Leave ends long for tuning</li>
-                        <li>Use high-quality baluns</li>
-                        <li>Keep feed line clear</li>
-                        <li>Weatherproof connections</li>
-                    </ul>
-                </div>
-                <div class="info-card">
-                    <h4>📡 9M2PJU Antenna Calculator</h4>
-                    <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 10px;">
-                        The ultimate calculation suite for amateur radio operators. Precision design and band
-                        optimization.
-                    </p>
-                </div>
+            <div>
+                <strong>Offline ready</strong>
+                <span>The calculator can install as a PWA and keep working without internet after first load.</span>
             </div>
-        </div>
+            <div>
+                <strong>Shared assumptions</strong>
+                <span>Element VF, coax VF, and impedance fields are reused across antenna and matching tools.</span>
+            </div>
+        </section>
     </div>
 
-    <script src="script.js?v=1.2"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

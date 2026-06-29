@@ -1,11 +1,15 @@
 {
+  "id": "./",
   "name": "9M2PJU Antenna Calculator",
-  "short_name": "9M2PJU Calc",
-  "description": "Professional Antenna Calculator for Amateur Radio Operators",
+  "short_name": "9M2PJU Antenna",
+  "description": "Amateur radio antenna, balun, unun, feedline and stub calculator.",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#0a0a0c",
-  "theme_color": "#00f2ff",
+  "orientation": "any",
+  "background_color": "#0b0d0e",
+  "theme_color": "#0b0d0e",
+  "categories": ["utilities", "education"],
   "icons": [
     {
       "src": "logo.png",
