@@ -1,21 +1,23 @@
 :root {
-    --bg: #0b0d0e;
-    --surface: #121619;
-    --surface-2: #171d21;
-    --surface-3: #20282d;
-    --field: #080b0c;
-    --line: #344149;
-    --line-soft: rgba(229, 236, 239, 0.09);
-    --text: #eef3f2;
-    --muted: #a8b7b9;
-    --subtle: #748489;
-    --green: #34d399;
-    --green-dark: #123b31;
-    --amber: #f3b33d;
-    --amber-dark: #3d2d12;
+    --bg: #090d0f;
+    --surface: #101619;
+    --surface-2: #151d21;
+    --surface-3: #1b262b;
+    --field: #06090b;
+    --line: #33434b;
+    --line-soft: rgba(223, 239, 242, 0.10);
+    --text: #edf7f6;
+    --muted: #a9bbbd;
+    --subtle: #71858a;
+    --green: #35d99b;
+    --green-dark: #0d3028;
+    --amber: #f2b84b;
+    --amber-dark: #2d2412;
     --red: #ef626c;
-    --blue: #60a5fa;
-    --shadow: 0 18px 52px rgba(0, 0, 0, 0.42);
+    --blue: #7ab7ff;
+    --cyan: #6ee7f9;
+    --shadow: 0 20px 60px rgba(0, 0, 0, 0.46);
+    --inner-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.055);
     --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
     --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
@@ -32,14 +34,15 @@ body {
     margin: 0;
     min-height: 100vh;
     background:
-        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px),
-        linear-gradient(180deg, #111719 0%, #090b0c 100%);
-    background-size: 36px 36px, 36px 36px, auto;
+        linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        radial-gradient(circle at 50% 0%, rgba(53, 217, 155, 0.075), transparent 34rem),
+        linear-gradient(180deg, #11191c 0%, #070a0b 100%);
+    background-size: 44px 44px, 44px 44px, auto, auto;
     color: var(--text);
     font-family: var(--sans);
     line-height: 1.45;
-    padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+    padding: max(18px, env(safe-area-inset-top)) 18px max(18px, env(safe-area-inset-bottom));
 }
 
 button,
@@ -53,7 +56,7 @@ button {
 }
 
 .app-shell {
-    width: min(1420px, 100%);
+    width: min(1440px, 100%);
     margin: 0 auto;
 }
 
@@ -62,13 +65,26 @@ button {
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    min-height: 104px;
+    min-height: 98px;
     padding: 14px 18px;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     border: 1px solid var(--line-soft);
     border-radius: 8px;
-    background: rgba(18, 22, 25, 0.92);
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015)),
+        rgba(16, 22, 25, 0.94);
     box-shadow: var(--shadow);
+    backdrop-filter: blur(14px);
+    position: relative;
+    overflow: hidden;
+}
+
+.header::after {
+    content: "";
+    position: absolute;
+    inset: auto 18px 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(53, 217, 155, 0.6), transparent);
 }
 
 .brand {
@@ -79,10 +95,10 @@ button {
 }
 
 .main-logo {
-    width: 72px;
-    height: 72px;
+    width: 70px;
+    height: 70px;
     object-fit: contain;
-    border-radius: 6px;
+    border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.10);
     background: #050607;
     flex: 0 0 auto;
@@ -90,7 +106,7 @@ button {
 
 .header h1 {
     margin: 0;
-    font-size: clamp(1.45rem, 2.8vw, 2.45rem);
+    font-size: clamp(1.38rem, 2.45vw, 2.25rem);
     line-height: 1.05;
     letter-spacing: 0;
     font-weight: 850;
@@ -116,8 +132,8 @@ button {
 .install-btn {
     min-height: 42px;
     padding: 0 18px;
-    color: #07100c;
-    background: var(--green);
+    color: #04120d;
+    background: linear-gradient(180deg, #69e8b2, var(--green));
     border-color: rgba(52, 211, 153, 0.88);
     font-weight: 850;
     white-space: nowrap;
@@ -131,17 +147,20 @@ button {
 
 .calculator {
     display: grid;
-    grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
-    gap: 14px;
+    grid-template-columns: minmax(310px, 390px) minmax(0, 1fr);
+    gap: 16px;
     align-items: start;
 }
 
 .controls,
 .workspace,
 .reference-strip {
-    background: rgba(18, 22, 25, 0.94);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 210px),
+        rgba(16, 22, 25, 0.94);
     border: 1px solid var(--line-soft);
     box-shadow: var(--shadow);
+    backdrop-filter: blur(12px);
 }
 
 .controls,
@@ -201,10 +220,13 @@ select {
     width: 100%;
     min-height: 44px;
     color: var(--text);
-    background: var(--field);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent),
+        var(--field);
     border: 1px solid var(--line);
     border-radius: 6px;
     padding: 10px 12px;
+    box-shadow: var(--inner-shadow);
 }
 
 input {
@@ -240,7 +262,9 @@ select:focus {
 
 .band-badge.valid {
     color: var(--green);
-    background: var(--green-dark);
+    background:
+        linear-gradient(180deg, rgba(53, 217, 155, 0.13), transparent),
+        var(--green-dark);
     border: 1px solid rgba(52, 211, 153, 0.46);
 }
 
@@ -259,7 +283,9 @@ select:focus {
     margin-top: 18px;
     padding: 10px 12px;
     border-radius: 6px;
-    background: var(--field);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent),
+        var(--field);
     border: 1px solid rgba(255, 255, 255, 0.05);
     color: var(--muted);
     font-family: var(--mono);
@@ -283,7 +309,7 @@ select:focus {
     position: absolute;
     inset: 0;
     border-radius: 999px;
-    background: #263238;
+    background: #24343a;
     border: 1px solid var(--line);
 }
 
@@ -295,7 +321,7 @@ select:focus {
     left: 3px;
     top: 3px;
     border-radius: 50%;
-    background: #9fb3b5;
+    background: #b7c7ca;
     transition: transform 0.16s ease, background 0.16s ease;
 }
 
@@ -315,12 +341,13 @@ input:checked + .slider::before {
     padding: 8px 10px;
     color: var(--muted);
     font-weight: 850;
+    box-shadow: var(--inner-shadow);
 }
 
 .category-btn.active,
 .tool-btn.active {
     color: #06100d;
-    background: var(--green);
+    background: linear-gradient(180deg, #61e6ae, var(--green));
     border-color: var(--green);
 }
 
@@ -343,6 +370,7 @@ input:checked + .slider::before {
     padding: 10px 12px;
     text-align: left;
     color: var(--text);
+    box-shadow: var(--inner-shadow);
 }
 
 .tool-btn span {
@@ -369,7 +397,9 @@ input:checked + .slider::before {
     align-items: start;
     padding: clamp(18px, 2.3vw, 28px) clamp(18px, 2.6vw, 32px);
     border-bottom: 1px solid var(--line-soft);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.045), transparent),
+        linear-gradient(90deg, rgba(53, 217, 155, 0.045), transparent 52%);
 }
 
 .eyebrow {
@@ -382,7 +412,7 @@ input:checked + .slider::before {
 
 .workspace h2 {
     margin: 0;
-    font-size: clamp(1.5rem, 2.7vw, 2.35rem);
+    font-size: clamp(1.48rem, 2.55vw, 2.25rem);
     line-height: 1.1;
     letter-spacing: 0;
 }
@@ -391,10 +421,10 @@ input:checked + .slider::before {
     display: inline-flex;
     align-items: center;
     min-height: 32px;
-    border: 1px solid rgba(96, 165, 250, 0.42);
-    color: #9fc9ff;
-    background: rgba(96, 165, 250, 0.10);
-    border-radius: 999px;
+    border: 1px solid rgba(122, 183, 255, 0.42);
+    color: #add2ff;
+    background: rgba(122, 183, 255, 0.10);
+    border-radius: 6px;
     padding: 0 12px;
     font-family: var(--mono);
     font-size: 0.82rem;
@@ -403,21 +433,36 @@ input:checked + .slider::before {
 }
 
 .tool-visual {
-    height: clamp(150px, 22vw, 228px);
+    height: clamp(172px, 24vw, 260px);
     margin: clamp(18px, 2.6vw, 32px) clamp(18px, 2.6vw, 32px) 0;
     border: 1px solid var(--line-soft);
     background:
-        linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px),
-        var(--field);
-    background-size: 24px 24px;
-    border-radius: 6px;
+        linear-gradient(rgba(110, 231, 249, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(110, 231, 249, 0.045) 1px, transparent 1px),
+        linear-gradient(rgba(110, 231, 249, 0.075) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(110, 231, 249, 0.06) 1px, transparent 1px),
+        radial-gradient(circle at 50% 40%, rgba(53, 217, 155, 0.09), transparent 58%),
+        #060b0d;
+    background-size: 24px 24px, 24px 24px, 96px 96px, 96px 96px, auto, auto;
+    border-radius: 8px;
     overflow: hidden;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.055), inset 0 0 60px rgba(0, 0, 0, 0.35);
+    position: relative;
+}
+
+.tool-visual::after {
+    content: "";
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgba(110, 231, 249, 0.08);
+    pointer-events: none;
 }
 
 .tool-visual svg {
     width: 100%;
     height: 100%;
+    position: relative;
+    z-index: 1;
 }
 
 .tool-visual line,
@@ -425,8 +470,8 @@ input:checked + .slider::before {
 .tool-visual rect,
 .tool-visual circle {
     fill: none;
-    stroke: var(--green);
-    stroke-width: 7;
+    stroke: #38dca0;
+    stroke-width: 4.2;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
@@ -434,6 +479,25 @@ input:checked + .slider::before {
 .tool-visual circle {
     fill: var(--amber);
     stroke: var(--amber);
+    filter: none;
+}
+
+.tool-visual .secondary,
+.tool-visual .feed {
+    stroke: var(--amber);
+}
+
+.tool-visual .spacer {
+    stroke: var(--subtle);
+    stroke-width: 3.2;
+    filter: none;
+}
+
+.tool-visual .hole {
+    fill: var(--field);
+    stroke: var(--amber);
+    stroke-width: 3.6;
+    filter: none;
 }
 
 .result-grid {
@@ -444,8 +508,10 @@ input:checked + .slider::before {
 }
 
 .result-item {
-    min-height: 104px;
-    background: var(--field);
+    min-height: 108px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.028), transparent),
+        var(--field);
     border: 1px solid var(--line-soft);
     border-left: 3px solid rgba(52, 211, 153, 0.78);
     border-radius: 6px;
@@ -454,6 +520,7 @@ input:checked + .slider::before {
     flex-direction: column;
     justify-content: space-between;
     gap: 12px;
+    box-shadow: var(--inner-shadow);
 }
 
 .label {
@@ -464,7 +531,7 @@ input:checked + .slider::before {
 }
 
 .value {
-    color: var(--green);
+    color: #49e6a7;
     font-family: var(--mono);
     font-size: clamp(1.08rem, 1.8vw, 1.42rem);
     line-height: 1.16;
@@ -472,12 +539,20 @@ input:checked + .slider::before {
     overflow-wrap: anywhere;
 }
 
+.value.long-value {
+    font-size: clamp(0.86rem, 1.2vw, 1.04rem);
+    line-height: 1.35;
+}
+
 .notes-panel {
     margin: 0 clamp(18px, 2.6vw, 32px) clamp(18px, 2.6vw, 32px);
     padding: 16px 18px;
     border-radius: 6px;
-    background: var(--amber-dark);
-    border: 1px solid rgba(243, 179, 61, 0.26);
+    background:
+        linear-gradient(180deg, rgba(242, 184, 75, 0.10), transparent),
+        rgba(45, 36, 18, 0.84);
+    border: 1px solid rgba(243, 179, 61, 0.30);
+    box-shadow: var(--inner-shadow);
 }
 
 .notes-panel h3 {
@@ -504,7 +579,9 @@ input:checked + .slider::before {
 
 .reference-strip div {
     padding: 16px 18px;
-    background: rgba(8, 11, 12, 0.72);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent),
+        rgba(8, 11, 12, 0.72);
 }
 
 .reference-strip strong,

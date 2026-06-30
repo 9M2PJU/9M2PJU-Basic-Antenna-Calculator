@@ -1,5 +1,7 @@
 const SPEED_OF_LIGHT = 299792458;
 const METERS_TO_FEET = 3.28084;
+const METERS_TO_INCHES = METERS_TO_FEET * 12;
+const MM_PER_INCH = 25.4;
 
 const VELOCITY_FACTORS = {
     copper_bare: 0.98,
@@ -7,6 +9,13 @@ const VELOCITY_FACTORS = {
     aluminum: 0.97,
     ladder_line: 0.90
 };
+
+const BALANCED_LINE_WIRES = [
+    { label: "18 AWG", diameterMm: 1.02 },
+    { label: "16 AWG", diameterMm: 1.29 },
+    { label: "14 AWG", diameterMm: 1.63 },
+    { label: "12 AWG", diameterMm: 2.05 }
+];
 
 const AMATEUR_BANDS = [
     { name: "2200m", min: 0.135, max: 0.138 },
@@ -48,6 +57,10 @@ let state = {
     coaxVf: 0.66,
     sourceZ: 50,
     loadZ: 450,
+    balancedWireDiameter: 1.63,
+    balancedSpacing: 34.7,
+    balancedLength: 10,
+    balancedVf: 0.95,
     deferredPrompt: null
 };
 
@@ -74,7 +87,7 @@ const TOOLS = [
         ],
         notes: ["Ends closer to ground lower impedance and resonance. Keep wire ends safely out of reach."]
     })),
-    tool("ocf", "wire", "Off-Center-Fed Dipole", "Antenna", "dipole", c => {
+    tool("ocf", "wire", "Off-Center-Fed Dipole", "Antenna", "ocf", c => {
         const total = c.wl * 0.5 * c.vf;
         return {
             results: [
@@ -122,7 +135,7 @@ const TOOLS = [
         ],
         notes: ["Avoid exact half-wave multiples for easier tuner loading. Popular non-resonant wire lengths include 29, 35.5, 41, 58, 71, 84 and 107 ft."]
     })),
-    tool("zepp", "wire", "Doublet / Zepp", "Antenna", "dipole", c => ({
+    tool("zepp", "wire", "Doublet / Zepp", "Antenna", "doublet", c => ({
         results: [
             r("Total top length", c.wl * 0.5 * c.vf),
             r("Each side", c.wl * 0.25 * c.vf),
@@ -131,7 +144,7 @@ const TOOLS = [
         ],
         notes: ["A doublet with ladder line is a strong multiband choice. Keep the balanced line clear of metal."]
     })),
-    tool("g5rv", "wire", "G5RV / ZS6BKW Reference", "Antenna", "dipole", () => ({
+    tool("g5rv", "wire", "G5RV / ZS6BKW Reference", "Antenna", "doublet", () => ({
         results: [
             r("Classic G5RV top", "31.1 m / 102 ft"),
             r("G5RV matching line", "10.4 m / 34 ft"),
@@ -140,7 +153,7 @@ const TOOLS = [
         ],
         notes: ["These are reference multiband dimensions, not scaled to the frequency box. Use ladder line and a tuner-friendly feedline layout."]
     })),
-    tool("t2fd", "wire", "T2FD / Terminated Folded Dipole", "Antenna", "folded", c => ({
+    tool("t2fd", "wire", "T2FD / Terminated Folded Dipole", "Antenna", "t2fd", c => ({
         results: [
             r("Overall length", c.wl * 0.45 * c.vf),
             r("Spacing", c.wl * 0.015),
@@ -149,7 +162,7 @@ const TOOLS = [
         ],
         notes: ["T2FD antennas trade efficiency for bandwidth. Use a resistor rated for the expected RF power dissipation."]
     })),
-    tool("beverage", "wire", "Beverage Receive Antenna", "RX Antenna", "endfed", c => ({
+    tool("beverage", "wire", "Beverage Receive Antenna", "RX Antenna", "beverage", c => ({
         results: [
             r("One wavelength", c.wl),
             r("Two wavelengths", c.wl * 2),
@@ -176,7 +189,7 @@ const TOOLS = [
         ],
         notes: ["Common on VHF. The matching network is part of the antenna, so final dimensions need field tuning."]
     })),
-    tool("discone", "vertical", "Discone", "Antenna", "vertical", c => ({
+    tool("discone", "vertical", "Discone", "Antenna", "discone", c => ({
         results: [
             r("Cone slant length", c.wl * 0.25 * c.vf),
             r("Disc radius", c.wl * 0.17 * c.vf),
@@ -185,7 +198,7 @@ const TOOLS = [
         ],
         notes: ["Discones are broadband scanner/VHF/UHF antennas. Choose the lowest useful frequency, then build mechanically stiff."]
     })),
-    tool("halfwave-vertical", "vertical", "Half-Wave Vertical", "Antenna", "vertical", c => ({
+    tool("halfwave-vertical", "vertical", "Half-Wave Vertical", "Antenna", "endfed-vertical", c => ({
         results: [
             r("Radiator", c.wl * 0.5 * c.vf),
             r("Counterpoise start", c.wl * 0.05 * c.vf),
@@ -353,6 +366,7 @@ const TOOLS = [
         ],
         notes: ["Physical length equals electrical wavelength times coax velocity factor."]
     })),
+    tool("balanced-line", "feedline", "Balanced Line Designer", "Feedline", "balanced", balancedLineDesign),
     tool("stub-short", "feedline", "Shorted Stub", "Stub", "stub", c => ({
         results: [
             r("1/8-wave shorted", c.wl * 0.125 * c.coaxVf),
@@ -404,6 +418,14 @@ function initializeElements() {
         coaxVf: document.getElementById("coax-vf"),
         sourceZ: document.getElementById("source-z"),
         loadZ: document.getElementById("load-z"),
+        balancedLinePanel: document.getElementById("balanced-line-panel"),
+        balancedWireDiameterLabel: document.getElementById("balanced-wire-diameter-label"),
+        balancedWireDiameter: document.getElementById("balanced-wire-diameter"),
+        balancedSpacingLabel: document.getElementById("balanced-spacing-label"),
+        balancedSpacing: document.getElementById("balanced-spacing"),
+        balancedLengthLabel: document.getElementById("balanced-length-label"),
+        balancedLength: document.getElementById("balanced-length"),
+        balancedVf: document.getElementById("balanced-vf"),
         unitToggle: document.getElementById("unit-toggle"),
         bandInfo: document.getElementById("band-info"),
         categoryTabs: document.getElementById("category-tabs"),
@@ -424,6 +446,10 @@ function setupEventListeners() {
     elements.coaxVf.addEventListener("input", e => updateState("coaxVf", clamp(toNumber(e.target.value, 0.66), 0.1, 1)));
     elements.sourceZ.addEventListener("input", e => updateState("sourceZ", Math.max(1, toNumber(e.target.value, 50))));
     elements.loadZ.addEventListener("input", e => updateState("loadZ", Math.max(1, toNumber(e.target.value, 450))));
+    elements.balancedWireDiameter.addEventListener("input", e => updateState("balancedWireDiameter", readSmallLengthInput(e.target.value, state.balancedWireDiameter)));
+    elements.balancedSpacing.addEventListener("input", e => updateState("balancedSpacing", readSmallLengthInput(e.target.value, state.balancedSpacing)));
+    elements.balancedLength.addEventListener("input", e => updateState("balancedLength", readLineLengthInput(e.target.value, state.balancedLength)));
+    elements.balancedVf.addEventListener("input", e => updateState("balancedVf", clamp(toNumber(e.target.value, 0.95), 0.5, 1)));
     elements.unitToggle.addEventListener("change", e => updateState("unit", e.target.checked ? "imperial" : "metric"));
 
     window.addEventListener("beforeinstallprompt", e => {
@@ -515,7 +541,11 @@ function createContext() {
         vf: VELOCITY_FACTORS[state.material],
         coaxVf: state.coaxVf,
         sourceZ: state.sourceZ,
-        loadZ: state.loadZ
+        loadZ: state.loadZ,
+        balancedWireDiameter: state.balancedWireDiameter,
+        balancedSpacing: state.balancedSpacing,
+        balancedLength: state.balancedLength,
+        balancedVf: state.balancedVf
     };
 }
 
@@ -525,7 +555,30 @@ function syncControls() {
     elements.coaxVf.value = state.coaxVf;
     elements.sourceZ.value = state.sourceZ;
     elements.loadZ.value = state.loadZ;
+    elements.balancedLinePanel.hidden = state.tool !== "balanced-line";
+    elements.balancedWireDiameterLabel.textContent = state.unit === "imperial" ? "Wire Diameter (in)" : "Wire Diameter (mm)";
+    elements.balancedSpacingLabel.textContent = state.unit === "imperial" ? "Center Spacing (in)" : "Center Spacing (mm)";
+    elements.balancedLengthLabel.textContent = state.unit === "imperial" ? "Line Length (ft)" : "Line Length (m)";
+    syncBalancedInputAttributes();
+    elements.balancedWireDiameter.value = formatSmallInput(state.balancedWireDiameter);
+    elements.balancedSpacing.value = formatSmallInput(state.balancedSpacing);
+    elements.balancedLength.value = formatLineLengthInput(state.balancedLength);
+    elements.balancedVf.value = state.balancedVf;
     elements.unitToggle.checked = state.unit === "imperial";
+}
+
+function syncBalancedInputAttributes() {
+    const smallStep = state.unit === "imperial" ? "0.001" : "0.01";
+    const spacingStep = state.unit === "imperial" ? "0.001" : "0.1";
+    const smallMin = state.unit === "imperial" ? "0.001" : "0.1";
+    const spacingMin = state.unit === "imperial" ? "0.001" : "0.2";
+
+    elements.balancedWireDiameter.step = smallStep;
+    elements.balancedWireDiameter.min = smallMin;
+    elements.balancedSpacing.step = spacingStep;
+    elements.balancedSpacing.min = spacingMin;
+    elements.balancedLength.step = "0.01";
+    elements.balancedLength.min = "0";
 }
 
 function updateBandInfo() {
@@ -535,14 +588,81 @@ function updateBandInfo() {
 }
 
 function renderResult(item) {
+    const value = typeof item.value === "number" ? formatLength(item.value) : item.value;
+    const longClass = typeof value === "string" && value.length > 32 ? " long-value" : "";
     return `<div class="result-item">
         <span class="label">${item.label}</span>
-        <span class="value">${typeof item.value === "number" ? formatLength(item.value) : item.value}</span>
+        <span class="value${longClass}">${value}</span>
     </div>`;
 }
 
 function r(label, value) {
     return { label, value };
+}
+
+function balancedLineDesign(c) {
+    const targetZ = clamp(c.loadZ, 75, 900);
+    const diameterMm = Math.max(0.1, c.balancedWireDiameter);
+    const spacingMm = Math.max(diameterMm * 1.01, c.balancedSpacing);
+    const physicalLength = Math.max(0, c.balancedLength);
+    const lineVf = clamp(c.balancedVf, 0.5, 1);
+    const actualZ = balancedImpedance(spacingMm, diameterMm);
+    const primaryWire = BALANCED_LINE_WIRES.find(wire => wire.label === "14 AWG");
+    const primary = balancedSpacing(primaryWire.diameterMm, targetZ);
+    const alternatives = BALANCED_LINE_WIRES.map(wire => {
+        const spacing = balancedSpacing(wire.diameterMm, targetZ);
+        return `${wire.label}: ${formatSmallLength(spacing.centerMeters)} holes`;
+    }).join(" | ");
+    const electricalLength = physicalLength / (c.wl * lineVf);
+    const electricalDegrees = electricalLength * 360;
+    const balun = balancedLineBalun(c.sourceZ, actualZ);
+
+    return {
+        results: [
+            r("Target line Z", `${targetZ.toFixed(0)} ohms`),
+            r("Your line Z", `${actualZ.toFixed(0)} ohms`),
+            r("Wire diameter", formatSmallLength(diameterMm / 1000)),
+            r("Center spacing", formatSmallLength(spacingMm / 1000)),
+            r("Clear wire gap", formatSmallLength((spacingMm - diameterMm) / 1000)),
+            r("Length entered", formatLength(physicalLength)),
+            r("Electrical length", `${electricalLength.toFixed(3)} wavelength / ${electricalDegrees.toFixed(0)} deg`),
+            r("1/4-wave line", c.wl * 0.25 * lineVf),
+            r("1/2-wave line", c.wl * 0.5 * lineVf),
+            r("Target with 14 AWG", `${formatSmallLength(primary.centerMeters)} holes`),
+            r("Balun / tuner", balun),
+            r("Other wire options", alternatives),
+            r("Formula", "Z0 = 120 acosh(S / d)")
+        ],
+        notes: [
+            "To design a line: set Source Z to the radio or tuner port, set Load Z to the balanced-line impedance you want, choose a wire diameter, then use the target spacing result as the center-to-center hole spacing in each spacer.",
+            "To check a line you already built: enter its actual wire diameter and center spacing. Your line Z is calculated from those dimensions, and clear wire gap shows the air space between conductors.",
+            "Length uses frequency and Line VF. Mostly air open-wire line is often near 0.95-0.99 VF; window/ladder line can be lower, so use the maker's VF when known.",
+            "Balun choice depends on the whole antenna system. For balanced line into a balanced tuner, use no unun; for coax to balanced line, use a current balun, usually 1:1 for choking or 4:1 when the tuner wants a lower impedance.",
+            "Keep balanced line away from metal, walls and soil. Bends, wet spacers and nearby objects change impedance and balance."
+        ]
+    };
+}
+
+function balancedImpedance(spacingMm, diameterMm) {
+    return 120 * Math.acosh(spacingMm / diameterMm);
+}
+
+function balancedLineBalun(sourceZ, lineZ) {
+    const ratio = lineZ / sourceZ;
+    if (ratio < 2) return "1:1 current balun";
+    if (ratio < 6) return "4:1 current balun";
+    if (ratio < 12) return "balanced tuner + 4:1 current balun";
+    return "balanced tuner preferred";
+}
+
+function balancedSpacing(diameterMm, impedance) {
+    const diameterMeters = diameterMm / 1000;
+    const centerMeters = diameterMeters * Math.cosh(impedance / 120);
+    return {
+        diameterMeters,
+        centerMeters,
+        gapMeters: Math.max(0, centerMeters - diameterMeters)
+    };
 }
 
 function formatLength(meters) {
@@ -561,14 +681,65 @@ function formatLength(meters) {
     return `${(feet * 12).toFixed(2)}"`;
 }
 
+function formatSmallLength(meters) {
+    if (!Number.isFinite(meters)) return "-";
+    if (state.unit === "metric") {
+        if (meters >= 1) return `${meters.toFixed(3)} m`;
+        const millimeters = meters * 1000;
+        return `${millimeters < 10 ? millimeters.toFixed(2) : millimeters.toFixed(1)} mm`;
+    }
+
+    const inches = meters * METERS_TO_FEET * 12;
+    if (inches >= 12) {
+        const feet = Math.floor(inches / 12);
+        return `${feet}' ${(inches - feet * 12).toFixed(2)}"`;
+    }
+    return `${inches < 1 ? inches.toFixed(3) : inches.toFixed(2)}"`;
+}
+
+function readSmallLengthInput(value, fallbackMm) {
+    const number = Number.parseFloat(value);
+    if (!Number.isFinite(number)) return fallbackMm;
+    const mm = state.unit === "imperial" ? number * MM_PER_INCH : number;
+    return Math.max(0.1, mm);
+}
+
+function readLineLengthInput(value, fallbackMeters) {
+    const number = Number.parseFloat(value);
+    if (!Number.isFinite(number)) return fallbackMeters;
+    const meters = state.unit === "imperial" ? number / METERS_TO_FEET : number;
+    return Math.max(0, meters);
+}
+
+function formatSmallInput(mm) {
+    const value = state.unit === "imperial" ? mm / MM_PER_INCH : mm;
+    return trimNumber(value, state.unit === "imperial" ? 4 : 2);
+}
+
+function formatLineLengthInput(meters) {
+    const value = state.unit === "imperial" ? meters * METERS_TO_FEET : meters;
+    return trimNumber(value, 2);
+}
+
+function trimNumber(value, digits) {
+    if (!Number.isFinite(value)) return "";
+    return Number(value.toFixed(digits)).toString();
+}
+
 function visualSvg(type) {
     const map = {
         dipole: `<svg viewBox="0 0 320 180"><line x1="160" y1="70" x2="34" y2="70"/><line x1="160" y1="70" x2="286" y2="70"/><circle cx="160" cy="70" r="8"/><path d="M160 78v70"/></svg>`,
+        ocf: `<svg viewBox="0 0 320 180"><line x1="118" y1="70" x2="34" y2="70"/><line x1="118" y1="70" x2="286" y2="70"/><circle cx="118" cy="70" r="8"/><path class="feed" d="M118 78v70"/></svg>`,
         invertedv: `<svg viewBox="0 0 320 180"><line x1="160" y1="36" x2="52" y2="148"/><line x1="160" y1="36" x2="268" y2="148"/><circle cx="160" cy="36" r="8"/></svg>`,
         endfed: `<svg viewBox="0 0 320 180"><circle cx="48" cy="90" r="10"/><line x1="58" y1="90" x2="290" y2="42"/><path d="M48 100v46"/></svg>`,
         folded: `<svg viewBox="0 0 320 180"><rect x="42" y="52" width="236" height="42" rx="20"/><circle cx="160" cy="94" r="7"/><path d="M160 101v42"/></svg>`,
+        t2fd: `<svg viewBox="0 0 320 180"><path d="M54 58h212v58H54Z"/><path class="secondary" d="M142 116h36"/><circle cx="160" cy="116" r="7"/><path class="feed" d="M160 123v28"/><path class="secondary" d="M248 58v58"/></svg>`,
         fan: `<svg viewBox="0 0 320 180"><circle cx="160" cy="78" r="8"/><line x1="160" y1="78" x2="36" y2="42"/><line x1="160" y1="78" x2="50" y2="96"/><line x1="160" y1="78" x2="284" y2="42"/><line x1="160" y1="78" x2="270" y2="96"/></svg>`,
+        doublet: `<svg viewBox="0 0 320 180"><line x1="160" y1="56" x2="36" y2="56"/><line x1="160" y1="56" x2="284" y2="56"/><circle cx="160" cy="56" r="8"/><line class="feed" x1="148" y1="64" x2="148" y2="148"/><line class="feed" x1="172" y1="64" x2="172" y2="148"/></svg>`,
+        beverage: `<svg viewBox="0 0 320 180"><line x1="46" y1="78" x2="278" y2="78"/><path class="secondary" d="M46 78v56M278 78v56"/><path class="secondary" d="M46 134h232"/><circle cx="46" cy="78" r="7"/><path class="feed" d="M46 85v48"/><path class="secondary" d="M278 64v28"/></svg>`,
         vertical: `<svg viewBox="0 0 320 180"><line x1="160" y1="28" x2="160" y2="140"/><circle cx="160" cy="140" r="8"/><line x1="160" y1="140" x2="60" y2="160"/><line x1="160" y1="140" x2="260" y2="160"/></svg>`,
+        "endfed-vertical": `<svg viewBox="0 0 320 180"><line x1="160" y1="24" x2="160" y2="132"/><circle cx="160" cy="132" r="8"/><path class="feed" d="M160 140v28"/><line class="secondary" x1="160" y1="132" x2="78" y2="156"/><line class="secondary" x1="160" y1="132" x2="242" y2="156"/></svg>`,
+        discone: `<svg viewBox="0 0 320 180"><line x1="160" y1="26" x2="160" y2="58"/><path d="M112 58h96"/><path d="M160 70 84 150"/><path d="M160 70l76 80"/><path d="M160 70v80"/><circle cx="160" cy="70" r="7"/></svg>`,
         jpole: `<svg viewBox="0 0 320 180"><path d="M145 20v138h38v-72"/><circle cx="164" cy="126" r="6"/></svg>`,
         slimjim: `<svg viewBox="0 0 320 180"><rect x="132" y="24" width="56" height="132" rx="20"/><path d="M132 78h56"/><circle cx="160" cy="126" r="6"/></svg>`,
         yagi: `<svg viewBox="0 0 320 180"><line x1="42" y1="90" x2="278" y2="90"/><line x1="72" y1="34" x2="72" y2="146"/><line x1="160" y1="44" x2="160" y2="136"/><line x1="248" y1="56" x2="248" y2="124"/></svg>`,
@@ -578,10 +749,28 @@ function visualSvg(type) {
         delta: `<svg viewBox="0 0 320 180"><path d="M160 28 58 150h204Z"/><circle cx="160" cy="150" r="7"/></svg>`,
         transformer: `<svg viewBox="0 0 320 180"><path d="M46 90h80"/><path d="M194 90h80"/><path d="M126 58c28 0 28 64 0 64"/><path d="M194 58c-28 0-28 64 0 64"/></svg>`,
         coax: `<svg viewBox="0 0 320 180"><path d="M38 92c48-60 92 60 140 0s88 20 104 0"/><path d="M38 122c48-60 92 60 140 0s88 20 104 0"/></svg>`,
+        balanced: `<svg viewBox="0 0 320 180"><line x1="38" y1="68" x2="282" y2="68"/><line x1="38" y1="112" x2="282" y2="112"/><path class="spacer" d="M84 48v84M160 48v84M236 48v84"/><circle class="hole" cx="84" cy="68" r="5"/><circle class="hole" cx="84" cy="112" r="5"/><circle class="hole" cx="160" cy="68" r="5"/><circle class="hole" cx="160" cy="112" r="5"/><circle class="hole" cx="236" cy="68" r="5"/><circle class="hole" cx="236" cy="112" r="5"/></svg>`,
         stub: `<svg viewBox="0 0 320 180"><path d="M42 90h130"/><path d="M172 90v70"/><path d="M172 160h44"/><path d="M172 90h106"/></svg>`,
         meter: `<svg viewBox="0 0 320 180"><path d="M88 132a72 72 0 0 1 144 0"/><path d="M160 132l48-54"/><circle cx="160" cy="132" r="8"/></svg>`
     };
-    return map[type] || map.dipole;
+    return enhanceDiagram(map[type] || map.dipole);
+}
+
+function enhanceDiagram(svg) {
+    const defs = `<defs>
+        <linearGradient id="conductor-gradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#6ee7b7"/>
+            <stop offset="50%" stop-color="#34d399"/>
+            <stop offset="100%" stop-color="#22c55e"/>
+        </linearGradient>
+        <filter id="technical-glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="0" stdDeviation="1.6" flood-color="#34d399" flood-opacity="0.28"/>
+        </filter>
+    </defs>`;
+
+    return svg
+        .replace("<svg ", `<svg class="diagram" role="img" `)
+        .replace(">", `>${defs}`);
 }
 
 function saveState() {
@@ -593,7 +782,11 @@ function saveState() {
         material: state.material,
         coaxVf: state.coaxVf,
         sourceZ: state.sourceZ,
-        loadZ: state.loadZ
+        loadZ: state.loadZ,
+        balancedWireDiameter: state.balancedWireDiameter,
+        balancedSpacing: state.balancedSpacing,
+        balancedLength: state.balancedLength,
+        balancedVf: state.balancedVf
     }));
 }
 

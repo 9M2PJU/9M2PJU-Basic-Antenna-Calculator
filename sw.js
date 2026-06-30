@@ -1,4 +1,4 @@
-const CACHE_NAME = "antenna-calc-v5";
+const CACHE_NAME = "antenna-calc-v9";
 const ASSETS = [
     "./",
     "./index.html",
